@@ -1,0 +1,49 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "local replace_card = Card(self.title_top.T.x, self.title_top.T.y, 1.2*G.CARD_W*SC_scale, 1.2*G.CARD_H*SC_scale, G.P_CARDS.S_A, G.P_CENTERS.c_base)"
+position = "at"
+payload = """
+local replace_card = 0
+local SC_scale = 1.1*(G.debug_splash_size_toggle and 0.8 or 1)
+local CAI = {
+        TITLE_TOP_W = G.CARD_W,
+        TITLE_TOP_H = G.CARD_H,
+    }
+if true then
+
+    SC_scale = 1.25*(G.debug_splash_size_toggle and 0.8 or 1)
+    CAI = {
+        TITLE_TOP_W = G.CARD_W-10.5,
+        TITLE_TOP_H = G.CARD_H,
+    }
+    self.title_top = CardArea(
+        0, 0,
+        CAI.TITLE_TOP_W,CAI.TITLE_TOP_H,
+        {card_limit = 1, type = 'title'})
+
+    
+    G.SPLASH_LOGO:set_alignment({
+        major = G.title_top,
+        type = 'cm',
+        bond = 'Strong',
+        offset = {x=0,y=0}
+    })
+    G.SPLASH_LOGO:define_draw_steps({{
+            shader = 'dissolve',
+        }})
+    
+    G.SPLASH_LOGO.dissolve_colours = {G.C.WHITE, G.C.WHITE}
+    G.SPLASH_LOGO.dissolve = 1   
+    
+    
+    replace_card = Card(self.title_top.T.x, self.title_top.T.y, 1.0*G.CARD_W*SC_scale, 1.0*G.CARD_H*SC_scale, G.P_CARDS.S_A, G.P_CENTERS.c_base)
+end
+"""
+match_indent = true
