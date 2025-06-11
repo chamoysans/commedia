@@ -35,7 +35,7 @@ local jokers = {
         atlas = "cmdia_jokers",
         loc_vars = function(self, info_queue, card)
             info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "u/DerpVN112", colours = { G.C.WHITE, HEX("77d96a") }}}
-            return { vars = {card.ability.extra.triggers} }
+            return { vars = {card.ability.extra.triggers, (card.ability.extra.triggers == 1) and "y" or "ies"} }
         end,
         calculate = function(self, card, context)
 
@@ -45,11 +45,11 @@ local jokers = {
 
                 local clovers = SMODS.find_card("j_cmdia_fourleaf_clover")
 
-                if clovers[1].ability.extra.temp ~= card.ability.extra.temp then return end
+                if clovers[G.CMDIA_clover_triggering_index].ability.extra.temp ~= card.ability.extra.temp then return end
 
                 card.ability.extra.triggers = card.ability.extra.triggers - 1
                 
-                if card.ability.extra.triggers == 0 then
+                if card.ability.extra.triggers <= 0 then
                     G.E_MANAGER:add_event(Event({
                         func = function()
                             play_sound('tarot1')
@@ -71,6 +71,8 @@ local jokers = {
                             return true
                         end
                     }))
+                    G.CMDIA_clover_triggering_index = G.CMDIA_clover_triggering_index + 1
+                    clovers[G.CMDIA_clover_triggering_index].ability.extra.temp = card.ability.extra.temp
                     return {
                         message = G.localization.misc.dictionary.cmdia_plucked
                     }
@@ -91,6 +93,8 @@ local orig_evaluate_play = G.FUNCS.evaluate_play
 G.FUNCS.evaluate_play = function(e)
 
     G.CMDIA_clover_triggering = true
+
+    G.CMDIA_clover_triggering_index = 1
 
     orig_evaluate_play(e)
 
