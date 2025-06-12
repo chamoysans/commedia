@@ -5,8 +5,6 @@ function CMDIA.get_name_of_thing(typee, set, id)
     return (not not G.localization) and G.localization[typee][set][id].name or "NIL"
 end
 
-
-
 SMODS.Sound({
     key = "music1",
     path = "music1.mp3",

@@ -21,7 +21,8 @@ end
 
 function CMDIA.credit_init()
     CMDIA.credit = {
-        {name = "DerpVN12", jokers = {CMDIA.get_name_of_thing("descriptions", "Joker", "j_cmdia_fourleaf_clover")}},
+        {name = "DerpVN12",},
+        {name = "someonenooneever",},
     }
 end
 

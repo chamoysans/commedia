@@ -13,12 +13,28 @@ return {
                     "{C:attention}#1#{} probabilit#2#,",
                 }
             },
+            j_cmdia_dramatist = {
+                name = "Dramatist",
+                text = {
+                    "Retriggers the",
+                    "effects of used",
+                    "{C:planet}Planet{} and some",
+                    "{C:tarot}Tarot{} cards,",
+                }
+            },
         },
         Other={
             cmdia_credit = {
                 name = "Credit",
                 text = {
                     "Idea by: {V:1,B:2}#1#{}"
+                },
+            },
+            cmdia_placeholder = {
+                name = "Placeholder art",
+                text = {
+                    "This #1# is using",
+                    "placeholder art,"
                 },
             },
         },
@@ -44,6 +60,8 @@ return {
             cmdia_credit_and = 'and',
             cmdia_credit_DerpVN12_01 = 'Came up with',
             cmdia_credit_DerpVN12_02 = 'Four-leaf Clover',
+            cmdia_credit_someonenooneever_01 = 'Came up with',
+            cmdia_credit_someonenooneever_02 = 'Dramatist',
         },
         high_scores={},
         labels={},
