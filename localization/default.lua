@@ -8,7 +8,7 @@ return {
             j_cmdia_fourleaf_clover = {
                 name = "Four-leaf Clover",
                 text = {
-                    "During a hand,",
+                    "During scoring,",
                     "Gurantees the next",
                     "{C:attention}#1#{} probabilit#2#,",
                 }
