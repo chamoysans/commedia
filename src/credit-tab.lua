@@ -1,6 +1,18 @@
 
+function CMDIA.credit_init()
+    CMDIA.credit = {
+        {name = "DerpVN12", section = "Joker"},
+        {name = "someonenooneever", section = "Joker"},
+        {name = "Friazes", section = "Joker"},
+        {name = "DerpVN12", section = "Art"},
+    }
+end
+
+CMDIA.credit_init()
+
 CMDIA._state = {
     page = 1,
+    section = CMDIA.credit[1].section
 }
 
 SMODS.current_mod.extra_tabs = function()
@@ -19,11 +31,11 @@ function CMDIA.get_dictionary(id)
     return G.localization.misc.dictionary[id]
 end
 
-function CMDIA.credit_init()
-    CMDIA.credit = {
-        {name = "DerpVN12",},
-        {name = "someonenooneever",},
-    }
+function CMDIA.get_dictionary_credit(section, name)
+    tprint(G.localization.misc.dictionary.cmdia.credit)
+    print(section)
+    print(name)
+    return G.localization.misc.dictionary.cmdia.credit[section][name]
 end
 
 --[[
@@ -109,20 +121,30 @@ function CMDIA.credit_menu_handler(data)
     local state = CMDIA._state
 
     local entry = CMDIA.credit[state.page]
+
+    entry.loc_text = CMDIA.get_dictionary_credit(state.section, entry.name)
+
+    entry.loc_text[1] = entry.loc_text[1] or ""
+    entry.loc_text[2] = entry.loc_text[2] or ""
   
     return {
       n = G.UIT.ROOT,
       config = {align = "cm", padding = 0.2, minw = 8, minh = 6, colour = G.C.BLACK,r = 0.1},
       nodes = {
         {n = G.UIT.R, config = {align = "cm"}, nodes = {
+            {n = G.UIT.R, config = {align = "tm", padding = 0.1}, nodes = {
+                {n = G.UIT.T, config = {text = state.section, scale = 0.7, colour = G.C.WHITE, align = "tm"}},
+            }},{n = G.UIT.R, config = {align = "tm", padding = 0.1}, nodes = {
+                {n = G.UIT.T, config = {text = "---------------------------------", scale = 0.4, colour = G.C.WHITE, align = "tm"}},
+            }},
             {n = G.UIT.R, config = {align = "tm", padding = 0.3}, nodes = {
                 {n = G.UIT.T, config = {text = entry.name, scale = 0.7, colour = G.C.WHITE, align = "tm"}},
             }},
             {n = G.UIT.R, config = {align = "cm", padding = 0.1}, nodes = {
-                {n = G.UIT.T, config = {text = CMDIA.get_dictionary('cmdia_credit_' .. entry.name .. "_01"), scale = 0.4, colour = G.C.WHITE, align = "cm"}},
+                {n = G.UIT.T, config = {text = entry.loc_text[1], scale = 0.4, colour = G.C.WHITE, align = "cm"}},
             }},
             {n = G.UIT.R, config = {align = "bm"}, nodes = {
-                {n = G.UIT.T, config = {text = CMDIA.get_dictionary('cmdia_credit_' .. entry.name .. "_02"), scale = 0.4, colour = G.C.WHITE, align = "bm"}},
+                {n = G.UIT.T, config = {text = entry.loc_text[2], scale = 0.4, colour = G.C.WHITE, align = "cm"}},
             }},
         }},
         {n = G.UIT.R, config = {align = "bm", padding = 0.2, minw = 8, minh = 0.5}, nodes = {
@@ -153,6 +175,7 @@ function CMDIA.menu_updater(e, dir)
     -- move the index, wrapping with modulo:
     local count = #CMDIA.credit
     state.page = ((state.page - 1 + dir) % count) + 1
+    state.section = CMDIA.credit[state.page].section
 
     local my_menu_uibox = e.UIBox
     -- Get the parent of the menu UIBox, because we want to delete and re-create the menu:

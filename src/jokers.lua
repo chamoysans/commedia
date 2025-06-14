@@ -36,13 +36,31 @@ CMDIA.dramatist_tarots = {
         end,
         ["c_wheel_of_fortune"] = function(used_tarot)
             G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
-                local over = false
-                local eligible_card = pseudorandom_element(temp_pool, pseudoseed('wheel_of_fortune'))
-                local edition = nil
-                edition = poll_edition('wheel_of_fortune', nil, true, true)
-                eligible_card:set_edition(edition, true)
-                check_for_unlock({type = 'have_edition'})
-                used_tarot:juice_up(0.3, 0.5)
+                if pseudorandom('wheel_of_fortune') < G.GAME.probabilities.normal/used_tarot.ability.extra then
+                    local temp_pool =   used_tarot.eligible_strength_jokers
+                    local over = false
+                    local eligible_card = pseudorandom_element(temp_pool, pseudoseed('wheel_of_fortune'))
+                    local edition = nil
+                    edition = poll_edition('wheel_of_fortune', nil, true, true)
+                    eligible_card:set_edition(edition, true)
+                    check_for_unlock({type = 'have_edition'})
+                    used_tarot:juice_up(0.3, 0.5)
+                else
+                    attention_text({
+                        text = localize('k_nope_ex'),
+                        scale = 1.3, 
+                        hold = 1.4,
+                        major = used_tarot,
+                        backdrop_colour = G.C.SECONDARY_SET.Tarot,
+                        align = (G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED) and 'tm' or 'cm',
+                        offset = {x = 0, y = (G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED) and -0.2 or 0},
+                        silent = true
+                        })
+                    G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.06*G.SETTINGS.GAMESPEED, blockable = false, blocking = false, func = function()
+                        play_sound('tarot2', 0.76, 0.4);return true end}))
+                    play_sound('tarot2', 1, 0.4)
+                    used_tarot:juice_up(0.3, 0.5)
+                end
             return true end }))
         end,
         ["c_temperance"] = function(used_tarot)
@@ -79,7 +97,7 @@ local jokers = {
         cost = 5,
         unlocked = true,
         discovered = true,
-        blueprint_compat = true,
+        blueprint_compat = false,
         atlas = "cmdia_jokers",
         loc_vars = function(self, info_queue, card)
             info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "u/DerpVN112", colours = { G.C.WHITE, HEX("77d96a") }}}
@@ -93,7 +111,7 @@ local jokers = {
 
                 local clovers = SMODS.find_card("j_cmdia_fourleaf_clover")
 
-                if clovers[G.CMDIA_clover_triggering_index].ability.extra.temp ~= card.ability.extra.temp then return end
+                if cmdia_clovercard ~= card then return end
 
                 card.ability.extra.triggers = card.ability.extra.triggers - 1
                 
@@ -120,7 +138,9 @@ local jokers = {
                         end
                     }))
                     G.CMDIA_clover_triggering_index = G.CMDIA_clover_triggering_index + 1
-                    clovers[G.CMDIA_clover_triggering_index].ability.extra.temp = card.ability.extra.temp
+                    if #clovers > 1 then
+                        clovers[G.CMDIA_clover_triggering_index].ability.extra.temp = card.ability.extra.temp
+                    end
                     return {
                         message = G.localization.misc.dictionary.cmdia_plucked
                     }
@@ -155,10 +175,10 @@ local jokers = {
                 -- planet cards
                 if context.consumeable.ability.set == 'Planet' and context.consumeable.ability.consumeable.hand_type and (not context.CMDIA_dramatist) then
 
-                    SMODS.calculate_effect({message = localize("k_again_ex")}, card)
+                    SMODS.calculate_effect({message = localize("k_again_ex")}, context.blueprint_card or card)
 
                     update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize(context.consumeable.ability.consumeable.hand_type, 'poker_hands'),chips = G.GAME.hands[context.consumeable.ability.consumeable.hand_type].chips, mult = G.GAME.hands[context.consumeable.ability.consumeable.hand_type].mult, level=G.GAME.hands[context.consumeable.ability.consumeable.hand_type].level})
-                    level_up_hand(card, context.consumeable.ability.consumeable.hand_type)
+                    level_up_hand(context.blueprint_card or card, context.consumeable.ability.consumeable.hand_type)
                     update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
 
                     SMODS.calculate_context({using_consumeable = true, consumeable = context.consumeable, area = context.area, CMDIA_dramatist = true})
@@ -173,11 +193,59 @@ local jokers = {
                 if context.consumeable.ability.set == 'Tarot' then
                     if CMDIA.dramatist_tarots.tarot_supported[context.consumeable.config.center.key] then
 
-                        SMODS.calculate_effect({message = localize("k_again_ex")}, card)
+                        SMODS.calculate_effect({message = localize("k_again_ex")}, context.blueprint_card or card)
 
                         CMDIA.dramatist_tarots.tarot_usage[context.consumeable.config.center.key](context.consumeable)
                     end
                 end
+            end
+        end,
+    },
+    ['bank_account'] = {
+        config = {
+            extra = {
+                
+            }
+        },
+        pos = { x = 2, y = 0 },
+        rarity = 2,
+        cost = 5,
+        unlocked = true,
+        discovered = true,
+        blueprint_compat = false,
+        atlas = "cmdia_jokers",
+        loc_vars = function(self, info_queue, card)
+            info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "Friazes", colours = { G.C.FILTER, G.C.WHITE }}}
+            return { vars = {} }
+        end,
+        calculate = function(self, card, context)
+        end,
+    },
+    ['bullwhip'] = {
+        config = {
+            extra = {
+                mult = 1.2,
+                dollars = 10
+            }
+        },
+        pos = { x = 3, y = 0 },
+        rarity = 2,
+        cost = 6,
+        unlocked = true,
+        discovered = true,
+        blueprint_compat = false,
+        atlas = "cmdia_jokers",
+        loc_vars = function(self, info_queue, card)
+            info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "Djinn_sarap", colours = { G.C.WHITE, HEX("38c7ad") }}}
+            info_queue[#info_queue+1] = {key = 'cmdia_placeholder', set = 'Other', vars = {"Joker"}}
+            return { vars = {card.ability.extra.mult - 1, card.ability.extra.dollars, card.ability.extra.mult*math.floor((G.GAME.dollars + (G.GAME.dollar_buffer or 0))/card.ability.extra.dollars)} }
+        end,
+        calculate = function(self, card, context)
+            if context.joker_main and math.floor((G.GAME.dollars + (G.GAME.dollar_buffer or 0))/card.ability.extra.dollars) >= 1 then 
+                return {
+                    message = localize{type='variable',key='a_xmult',vars={card.ability.extra.mult*math.floor((G.GAME.dollars + (G.GAME.dollar_buffer or 0))/card.ability.extra.dollars)}},
+                    Xmult_mod = card.ability.extra.mult*math.floor((G.GAME.dollars + (G.GAME.dollar_buffer or 0))/card.ability.extra.dollars)
+                }
             end
         end,
     },
@@ -209,7 +277,7 @@ function pseudorandom(seed, min, max)
 
         -- clovers[1].ability.extra.
 
-        SMODS.calculate_context({cmdia_clover = true, card = clovers[1]}) -- line thats crashing
+        SMODS.calculate_context({cmdia_clover = true, cmdia_clovercard = clovers[1]}) -- line thats crashing
         result = 0
     end
 

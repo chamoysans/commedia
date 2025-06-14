@@ -22,6 +22,21 @@ return {
                     "{C:tarot}Tarot{} cards,",
                 }
             },
+            j_cmdia_bank_account = {
+                name = "Bank Account",
+                text = {
+                    "Interest is",
+                    "always {C:attention}maxed out,{}",
+                }
+            },
+            j_cmdia_bullwhip = {
+                name = "Bullwhip",
+                text = {
+                    "{X:mult,C:white}X#1#{} Mult for every",
+                    "{C:money}$#2#{} you have,",
+                    "{C:inactive}Currently: X#3#{}",
+                }
+            },
         },
         Other={
             cmdia_credit = {
@@ -34,7 +49,8 @@ return {
                 name = "Placeholder art",
                 text = {
                     "This #1# is using",
-                    "placeholder art,"
+                    "placeholder art,",
+                    "It will be changed later",
                 },
             },
         },
@@ -58,10 +74,26 @@ return {
             cmdia_credit_page = 'Page',
             cmdia_credit_came_up = 'Came up with',
             cmdia_credit_and = 'and',
-            cmdia_credit_DerpVN12_01 = 'Came up with',
-            cmdia_credit_DerpVN12_02 = 'Four-leaf Clover',
-            cmdia_credit_someonenooneever_01 = 'Came up with',
-            cmdia_credit_someonenooneever_02 = 'Dramatist',
+            cmdia = {
+                credit = {
+                    Joker = {
+                        ["DerpVN12"] = {
+                            "Four-leaf Clover"
+                        },
+                        ["someonenooneever"] = {
+                            "Dramatist"
+                        },
+                        ["Friazes"] = {
+                            "Bank Account"
+                        },
+                    },
+                    Art = {
+                        ["DerpVN12"] = {
+                            "Four-leaf Clover"
+                        },
+                    }
+                }
+            },
         },
         high_scores={},
         labels={},
@@ -73,7 +105,6 @@ return {
         suits_singular={},
         tutorial={},
         v_dictionary={},
-        v_text={
-        },
+        v_text={},
     },
 }
