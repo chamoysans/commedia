@@ -29,12 +29,13 @@ return {
                     "always {C:attention}maxed out,{}",
                 }
             },
-            j_cmdia_bullwhip = {
-                name = "Bullwhip",
+            j_cmdia_kintsugi = {
+                name = "Kintsugi",
                 text = {
-                    "{X:mult,C:white}X#1#{} Mult for every",
-                    "{C:money}$#2#{} you have,",
-                    "{C:inactive}Currently: X#3#{}",
+                    "When the self-destruct effect ",
+                    "of a {C:attention}glass card{}",
+                    "without a seal triggers,",
+                    "it instead gains a {C:money}gold seal.{}",
                 }
             },
         },

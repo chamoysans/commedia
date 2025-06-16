@@ -6,6 +6,6 @@
 	"description": "Adds all of the communities suggestions, ideas, etc. (Modify in the config tab)",
 	"prefix": "cmdia",
 	"main_file": "main.lua",
-    "version": "0.0.1",
-    "priority": 0
+    "version": "0.0.4",
+    "priority": -2147483647
 }

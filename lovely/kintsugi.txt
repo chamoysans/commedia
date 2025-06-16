@@ -1,0 +1,79 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''SMODS.calculate_destroying_cards({ full_hand = G.play.cards, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands, cardarea = v }, cards_destroyed, v == G.play and scoring_hand or nil)'''
+position = "at"
+payload = '''
+local context = { full_hand = G.play.cards, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands, cardarea = v }
+local cards_destroyed = cards_destroyed
+local scoring_hand = (v == G.play and scoring_hand or v == 'unscored' and unscored_cards or nil)
+
+for i,card in ipairs(scoring_hand or context.cardarea.cards) do
+	local destroyed = nil
+    local CMDIA_kinitsugi = nil
+	--un-highlight all cards
+	if scoring_hand then highlight_card(card,(i-0.999)/(#scoring_hand-0.998),'down') end
+
+	-- context.destroying_card calculations
+	context.destroy_card = card
+	context.destroying_card = scoring_hand and card
+	for _, area in ipairs(SMODS.get_card_areas('jokers')) do
+		local should_break
+		for _, _card in ipairs(area.cards) do
+			local eval, post = eval_card(_card, context)
+			local self_destroy = false
+			for key, effect in pairs(eval) do
+				if type(effect) == 'table' then
+					self_destroy = SMODS.calculate_effect(effect, card)
+				else
+					self_destroy = effect
+				end
+			end
+			SMODS.trigger_effects({post}, card)
+			if self_destroy then 
+				destroyed = true
+				should_break = true
+				break
+			end
+		end
+		if should_break then break end
+	end
+	
+	if scoring_hand and SMODS.has_enhancement(card, 'm_glass') and not card.debuff and pseudorandom('glass') < G.GAME.probabilities.normal/(card.ability.name == 'Glass Card' and card.ability.extra or G.P_CENTERS.m_glass.config.extra) then
+		if not card.seal then
+            CMDIA_kinitsugi = true
+        else
+            destroyed = true
+        end
+	end
+	
+	local eval, post = eval_card(card, context)
+	local self_destroy = false
+	for key, effect in pairs(eval) do
+		self_destroy = SMODS.calculate_effect(effect, card)
+	end
+	SMODS.trigger_effects({post}, card)
+	if self_destroy then destroyed = true end
+	
+	-- TARGET: card destroyed
+
+	if destroyed then 
+		if SMODS.shatters(card) then
+			card.shattered = true
+		else 
+			card.destroyed = true
+		end 
+		cards_destroyed[#cards_destroyed+1] = card
+	end
+
+    if CMDIA_kinitsugi then
+        card:set_seal('Gold')
+    end
+end
+'''
+match_indent = true

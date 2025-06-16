@@ -221,11 +221,9 @@ local jokers = {
         calculate = function(self, card, context)
         end,
     },
-    ['bullwhip'] = {
+    ['kintsugi'] = {
         config = {
             extra = {
-                mult = 1.2,
-                dollars = 10
             }
         },
         pos = { x = 3, y = 0 },
@@ -236,17 +234,10 @@ local jokers = {
         blueprint_compat = false,
         atlas = "cmdia_jokers",
         loc_vars = function(self, info_queue, card)
-            info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "Djinn_sarap", colours = { G.C.WHITE, HEX("38c7ad") }}}
-            info_queue[#info_queue+1] = {key = 'cmdia_placeholder', set = 'Other', vars = {"Joker"}}
-            return { vars = {card.ability.extra.mult - 1, card.ability.extra.dollars, card.ability.extra.mult*math.floor((G.GAME.dollars + (G.GAME.dollar_buffer or 0))/card.ability.extra.dollars)} }
+            info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "pie-en-argent", colours = { G.C.FILTER, G.C.WHITE }}}
+            return { vars = {} }
         end,
         calculate = function(self, card, context)
-            if context.joker_main and math.floor((G.GAME.dollars + (G.GAME.dollar_buffer or 0))/card.ability.extra.dollars) >= 1 then 
-                return {
-                    message = localize{type='variable',key='a_xmult',vars={card.ability.extra.mult*math.floor((G.GAME.dollars + (G.GAME.dollar_buffer or 0))/card.ability.extra.dollars)}},
-                    Xmult_mod = card.ability.extra.mult*math.floor((G.GAME.dollars + (G.GAME.dollar_buffer or 0))/card.ability.extra.dollars)
-                }
-            end
         end,
     },
 }
