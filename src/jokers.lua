@@ -160,7 +160,7 @@ local jokers = {
         },
         pos = { x = 1, y = 0 },
         rarity = 3,
-        cost = 7,
+        cost = 9,
         unlocked = true,
         discovered = true,
         blueprint_compat = true,
