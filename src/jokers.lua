@@ -227,7 +227,7 @@ local jokers = {
             }
         },
         pos = { x = 3, y = 0 },
-        rarity = 2,
+        rarity = 3,
         cost = 6,
         unlocked = true,
         discovered = true,
