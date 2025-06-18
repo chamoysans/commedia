@@ -24,6 +24,8 @@ CMDIA.dramatist_tarots = {
         ["c_wheel_of_fortune"] = true,
         ["c_temperance"] = true,
         ["c_judgement"] = true,
+        ["c_emperor"] = true,
+        ["c_high_priestess"] = true,
     },
     tarot_usage = {
         ["c_hermit"] = function(used_tarot)
@@ -81,8 +83,24 @@ CMDIA.dramatist_tarots = {
                 return true end }))
             delay(0.6)
         end,
+        ["c_emperor"] = function(used_tarot)
+            for i = 1, math.min((used_tarot.ability.consumeable.tarots or used_tarot.ability.consumeable.planets), G.consumeables.config.card_limit - #G.consumeables.cards) do
+                G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+                    if G.consumeables.config.card_limit > #G.consumeables.cards then
+                        play_sound('timpani')
+                        local card = create_card((used_tarot.ability.name == 'The Emperor' and 'Tarot') or (used_tarot.ability.name == 'The High Priestess' and 'Planet'), G.consumeables, nil, nil, nil, nil, nil, (used_tarot.ability.name == 'The Emperor' and 'emp') or (used_tarot.ability.name == 'The High Priestess' and 'pri'))
+                        card:add_to_deck()
+                        G.consumeables:emplace(card)
+                        used_tarot:juice_up(0.3, 0.5)
+                    end
+                    return true end }))
+            end
+            delay(0.6)
+        end
     }
 }
+
+CMDIA.dramatist_tarots.tarot_usage.c_high_priestess = CMDIA.dramatist_tarots.tarot_usage.c_emperor
 
 local jokers = {
     ['fourleaf_clover'] = {
@@ -101,17 +119,19 @@ local jokers = {
         atlas = "cmdia_jokers",
         loc_vars = function(self, info_queue, card)
             info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "u/DerpVN112", colours = { G.C.WHITE, HEX("77d96a") }}}
+            info_queue[#info_queue+1] = {key = 'cmdia_credit_art', set = 'Other', vars = { "u/DerpVN112", colours = { G.C.WHITE, HEX("77d96a") }}}
             return { vars = {card.ability.extra.triggers, (card.ability.extra.triggers == 1) and "y" or "ies"} }
         end,
         calculate = function(self, card, context)
 
             if context.cmdia_clover and card.ability and card.ability.extra then
 
-                card.ability.extra.temp = math.random() * (math.random() * 100)
+                
+                if not card.ability.extra.temp_perm then card.ability.extra.temp = math.random() * math.random() end
 
                 local clovers = SMODS.find_card("j_cmdia_fourleaf_clover")
 
-                if cmdia_clovercard ~= card then return end
+                if context.cmdia_clovercard.ability.extra.temp ~= card.ability.extra.temp then print("NUH UH | CMDIA "); return end
 
                 card.ability.extra.triggers = card.ability.extra.triggers - 1
                 
@@ -137,9 +157,13 @@ local jokers = {
                             return true
                         end
                     }))
-                    G.CMDIA_clover_triggering_index = G.CMDIA_clover_triggering_index + 1
-                    if #clovers > 1 then
-                        clovers[G.CMDIA_clover_triggering_index].ability.extra.temp = card.ability.extra.temp
+                    
+                    if #clovers > G.CMDIA_clover_triggering_index then
+                        G.CMDIA_clover_triggering_index = G.CMDIA_clover_triggering_index + 1
+                        context.cmdia_clovercard.ability.extra.temp = card.ability.extra.temp
+                        context.cmdia_clovercard.ability.extra.temp_perm = true
+                    else
+                        G.CMDIA_clover_triggering = false
                     end
                     return {
                         message = G.localization.misc.dictionary.cmdia_plucked
@@ -167,6 +191,7 @@ local jokers = {
         atlas = "cmdia_jokers",
         loc_vars = function(self, info_queue, card)
             info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "u/someonenoonenever", colours = { G.C.FILTER, G.C.WHITE }}}
+            info_queue[#info_queue+1] = {key = 'cmdia_credit_art', set = 'Other', vars = { "u/someonenoonenever", colours = { G.C.FILTER, G.C.WHITE }}}
             return { vars = {} }
         end,
         calculate = function(self, card, context)
@@ -213,6 +238,9 @@ local jokers = {
         unlocked = true,
         discovered = true,
         blueprint_compat = false,
+        mod_incompats = {
+            "Talisman"
+        },
         atlas = "cmdia_jokers",
         loc_vars = function(self, info_queue, card)
             info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "Friazes", colours = { G.C.FILTER, G.C.WHITE }}}
@@ -240,6 +268,41 @@ local jokers = {
         calculate = function(self, card, context)
         end,
     },
+    ['theseus'] = {
+        config = {
+            extra = {
+                slots = 1
+            }
+        },
+        pos = { x = 4, y = 0 },
+        rarity = 1,
+        cost = 1,
+        unlocked = false,
+        discovered = false,
+        blueprint_compat = false,
+        atlas = "cmdia_jokers",
+        loc_vars = function(self, info_queue, card)
+            info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "Pusheenunderscore", colours = { G.C.FILTER, G.C.WHITE }}}
+            return { vars = {card.ability.extra.slots} }
+        end,
+        add_to_deck = function(self, card, from_debuff)
+            G.jokers.config.card_limit = lenient_bignum(
+                G.jokers.config.card_limit + to_big(card.ability.extra.slots)
+            )
+        end,
+        remove_from_deck = function(self, card, from_debuff)
+            G.jokers.config.card_limit = lenient_bignum(
+                G.jokers.config.card_limit - to_big(card.ability.extra.slots)
+            )
+        end,
+        check_for_unlock = function(self, args)
+            if args.type == 'win_custom' then
+                if G.GAME.max_jokers <= G.jokers.config.card_limit - 1 then
+                    unlock_card(self)
+                end
+            end
+        end,
+    },
 }
 
 -- four leaf clover stuff --
@@ -254,6 +317,12 @@ G.FUNCS.evaluate_play = function(e)
 
     orig_evaluate_play(e)
 
+    local clovers = SMODS.find_card("j_cmdia_fourleaf_clover")
+
+    for i, v in ipairs(clovers) do
+        v.ability.extra.temp_perm = false
+    end
+
     G.CMDIA_clover_triggering = false
 end
 
@@ -264,11 +333,18 @@ function pseudorandom(seed, min, max)
 
     local clovers = SMODS.find_card("j_cmdia_fourleaf_clover")
 
+    local safeIndex = 1
+
+    for i, v in ipairs(clovers) do
+        if v.ability.extra.triggers ~= 0 then
+            safeIndex = i
+            break
+        end
+    end
+
     if next(SMODS.find_card("j_cmdia_fourleaf_clover")) and G.CMDIA_clover_triggering then
 
-        -- clovers[1].ability.extra.
-
-        SMODS.calculate_context({cmdia_clover = true, cmdia_clovercard = clovers[1]}) -- line thats crashing
+        SMODS.calculate_context({cmdia_clover = true, cmdia_clovercard = clovers[safeIndex]}) -- line thats crashing
         result = 0
     end
 
@@ -280,7 +356,18 @@ end
 for k, v in pairs(jokers) do
     v.key = k
     v.name = k
-    SMODS.Joker(v)
+    local mod_incompats = v.mod_incompats or {}
+    v.mod_incompats = nil
+
+    local shouldAdd = true
+
+    for i, v in ipairs(mod_incompats) do
+        if (SMODS.Mods[v] or {}).can_load then
+            shouldAdd = false
+        end
+    end
+
+    if shouldAdd then SMODS.Joker(v) end    
 
     if testDeck then
 

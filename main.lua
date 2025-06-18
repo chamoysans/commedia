@@ -6,6 +6,12 @@ CMDIA = {
     }
 }
 
+to_big = to_big or function(x) return x end
+
+to_number = to_number or function (x) return x end
+
+lenient_bignum = lenient_bignum or function (x) return x end
+
 function CMDIA.get_name_of_thing(typee, set, id)
     return (not not G.localization) and G.localization[typee][set][id].name or "NIL"
 end

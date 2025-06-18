@@ -38,12 +38,31 @@ return {
                     "it instead gains a {C:money}gold seal.{}",
                 }
             },
+            j_cmdia_theseus = {
+                name = "Theseus' Joker",
+                text = {
+                    "{C:dark_edition}+#1#{C:attention} Joker{} slot,",
+                    "{C:inactive,s:0.8}temperance value{}",
+                },
+                unlock = {
+                    "Win a run with an",
+                    "extra {E:1,C:attention}Joker slot,{}",
+                }
+            },
         },
         Other={
             cmdia_credit = {
-                name = "Credit",
+                name = "Credit - Idea",
                 text = {
-                    "Idea by: {V:1,B:2}#1#{}"
+                    "Idea by:",
+                    "{V:1,B:2}#1#{}",
+                },
+            },
+            cmdia_credit_art = {
+                name = "Credit - Art",
+                text = {
+                    "Art by:",
+                    "{V:1,B:2}#1#{}",
                 },
             },
             cmdia_placeholder = {
@@ -87,10 +106,19 @@ return {
                         ["Friazes"] = {
                             "Bank Account"
                         },
+                        ["pie-en-argent"] = {
+                            "Kintsugi"
+                        },
+                        ["Pusheenunderscore"] = {
+                            "Theseus' Joker"
+                        },
                     },
                     Art = {
                         ["DerpVN12"] = {
                             "Four-leaf Clover"
+                        },
+                        ["someonenooneever"] = {
+                            "Dramatist"
                         },
                     }
                 }
