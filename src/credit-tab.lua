@@ -6,6 +6,7 @@ function CMDIA.credit_init()
         {name = "Friazes", section = "Joker"},
         {name = "pie-en-argent", section = "Joker"},
         {name = "Pusheenunderscore", section = "Joker"},
+        {name = "GameShowWerewolf", section = "Joker"},
         {name = "DerpVN12", section = "Art"},
         {name = "someonenooneever", section = "Art"},
     }

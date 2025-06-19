@@ -195,18 +195,32 @@ local jokers = {
             return { vars = {} }
         end,
         calculate = function(self, card, context)
-            if context.using_consumeable then
+            if context.using_consumeable and (not context.CMDIA_dramatist) then
 
                 -- planet cards
-                if context.consumeable.ability.set == 'Planet' and context.consumeable.ability.consumeable.hand_type and (not context.CMDIA_dramatist) then
+                if context.consumeable.ability.set == 'Planet' then
+
 
                     SMODS.calculate_effect({message = localize("k_again_ex")}, context.blueprint_card or card)
+
+                    --[[
 
                     update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize(context.consumeable.ability.consumeable.hand_type, 'poker_hands'),chips = G.GAME.hands[context.consumeable.ability.consumeable.hand_type].chips, mult = G.GAME.hands[context.consumeable.ability.consumeable.hand_type].mult, level=G.GAME.hands[context.consumeable.ability.consumeable.hand_type].level})
                     level_up_hand(context.blueprint_card or card, context.consumeable.ability.consumeable.hand_type)
                     update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
 
-                    SMODS.calculate_context({using_consumeable = true, consumeable = context.consumeable, area = context.area, CMDIA_dramatist = true})
+                    ]]
+
+                    local useFunction = context.consumeable.config.center.use or function(z, a, b, c, context, card)
+
+                        update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize(context.consumeable.ability.consumeable.hand_type, 'poker_hands'),chips = G.GAME.hands[context.consumeable.ability.consumeable.hand_type].chips, mult = G.GAME.hands[context.consumeable.ability.consumeable.hand_type].mult, level=G.GAME.hands[context.consumeable.ability.consumeable.hand_type].level})
+                        level_up_hand(context.blueprint_card or card, context.consumeable.ability.consumeable.hand_type)
+                        update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+                    end
+
+                    useFunction(context.consumeable, context.consumeable, context.area, nil, context, card) -- im fricking hoping this doesnt crash
+
+                    SMODS.calculate_context({using_consumeable = true, consumeable = context.consumeable, area = context.area, CMDIA_dramatist = true, CMDIA_comet = context.CMDIA_comet})
 
                     return({
                         message = localize('k_upgrade_ex'),
@@ -220,7 +234,11 @@ local jokers = {
 
                         SMODS.calculate_effect({message = localize("k_again_ex")}, context.blueprint_card or card)
 
+                        G.GAME.consumeable_usage_total.tarot = G.GAME.consumeable_usage_total.tarot + 1
+
                         CMDIA.dramatist_tarots.tarot_usage[context.consumeable.config.center.key](context.consumeable)
+
+                        SMODS.calculate_context({using_consumeable = true, consumeable = context.consumeable, area = context.area, CMDIA_dramatist = true})
                     end
                 end
             end
@@ -299,6 +317,48 @@ local jokers = {
             if args.type == 'win_custom' then
                 if G.GAME.max_jokers <= G.jokers.config.card_limit - 1 then
                     unlock_card(self)
+                end
+            end
+        end,
+    },
+    ['jimbos_comet'] = {
+        config = {
+            extra = {
+                level_ups = 2
+            }
+        },
+        pos = { x = 5, y = 0 },
+        rarity = 2,
+        cost = 6,
+        unlocked = true,
+        discovered = true,
+        blueprint_compat = false, -- false cause hell NO i am not doing all that stupid shit with blueprint
+        atlas = "cmdia_jokers",
+        loc_vars = function(self, info_queue, card)
+            info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "GameShowWerewolf", colours = { G.C.WHITE, HEX("de2137") }}}
+            return { vars = {card.ability.extra.level_ups} }
+        end,
+        calculate = function(self, card, context)
+            if context.using_consumeable and (not context.CMDIA_comet) then
+
+                -- planet cards
+                if context.consumeable.ability.set == 'Planet' then
+
+                    local useFunction = context.consumeable.config.center.use or function(z, a, b, c, context, card)
+
+                        update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize(context.consumeable.ability.consumeable.hand_type, 'poker_hands'),chips = G.GAME.hands[context.consumeable.ability.consumeable.hand_type].chips, mult = G.GAME.hands[context.consumeable.ability.consumeable.hand_type].mult, level=G.GAME.hands[context.consumeable.ability.consumeable.hand_type].level})
+                        level_up_hand(context.blueprint_card or card, context.consumeable.ability.consumeable.hand_type)
+                        update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+                    end
+
+                    for i = 1, card.ability.extra.level_ups do
+                        useFunction(context.consumeable, context.consumeable, context.area, nil, context, card)
+                    end
+
+                    return({
+                        message = localize('k_upgrade_ex'),
+                        colour = G.C.SECONDARY_SET.Planet
+                    })
                 end
             end
         end,

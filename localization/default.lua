@@ -49,6 +49,13 @@ return {
                     "extra {E:1,C:attention}Joker slot,{}",
                 }
             },
+            j_cmdia_jimbos_comet = {
+                name = "Jimbo's Comet",
+                text = {
+                    "{C:planet}Planet{} cards upgrade",
+                    "{C:green}#1#{} additional times,",
+                },
+            },
         },
         Other={
             cmdia_credit = {
@@ -112,6 +119,9 @@ return {
                         ["Pusheenunderscore"] = {
                             "Theseus' Joker"
                         },
+                        ["GameShowWerewolf"] = {
+                            "Joker's Comet"
+                        },
                     },
                     Art = {
                         ["DerpVN12"] = {
@@ -121,7 +131,8 @@ return {
                             "Dramatist"
                         },
                     }
-                }
+                },
+                config_music_select = "Music"
             },
         },
         high_scores={},

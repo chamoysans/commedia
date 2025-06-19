@@ -3,7 +3,26 @@ CMDIA = {
     ingame_buffer = {
         CAI = {},
         main_menu_offset = 5.25,
-    }
+    },
+    music = {
+        options = {
+            "Vanilla",
+            "Bonne Soiree",
+            "B-Side",
+            "Monkey Buisness",
+            "Raise the stakes",
+            "Going in blind",
+        },
+        keys = {
+            "vanilla",
+            "bonne_soiree",
+            "b_side",
+            "monkey_buisness",
+            "raise_the_stakes",
+            "going_in_blind",
+        },
+    },
+    config = SMODS.current_mod.config,
 }
 
 to_big = to_big or function(x) return x end
@@ -97,33 +116,46 @@ Game.main_menu = function(change_context)
     return ret
 end
 
+local music_choices = CMDIA.config.Music
+
+local music_choice
+
+for k, v in pairs(music_choices) do
+    if v then
+        music_choice = k
+        goto music
+    end
+end
+
+::music::
+
 SMODS.Sound({
     key = "music1",
-    path = "music1.mp3",
+    path = music_choice .. "/music1.mp3",
     replace = "music1"
 })
 
 SMODS.Sound({
     key = "music2",
-    path = "music2.mp3",
+    path = music_choice .. "/music2.mp3",
     replace = "music2"
 })
 
 SMODS.Sound({
     key = "music3",
-    path = "music3.mp3",
+    path = music_choice .. "/music3.mp3",
     replace = "music3"
 })
 
 SMODS.Sound({
     key = "music4",
-    path = "music4.mp3",
+    path = music_choice .. "/music4.mp3",
     replace = "music4"
 })
 
 SMODS.Sound({
     key = "music5",
-    path = "music5.mp3",
+    path = music_choice .. "/music5.mp3",
     replace = "music5"
 })
 
@@ -137,3 +169,4 @@ SMODS.Atlas{
 
 assert(SMODS.load_file("src/jokers.lua"))()
 assert(SMODS.load_file("src/credit-tab.lua"))()
+-- assert(SMODS.load_file("src/config-tab.lua"))()
