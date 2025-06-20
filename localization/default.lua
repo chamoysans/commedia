@@ -130,7 +130,13 @@ return {
                         ["someonenooneever"] = {
                             "Dramatist"
                         },
-                    }
+                    },
+                    Music = {
+                        ["Recycled Scraps"] = {
+                            "Going in blind (Underrated TBH)"
+                        },
+                        
+                    },
                 },
                 config_music_select = "Music"
             },
