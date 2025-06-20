@@ -9,6 +9,7 @@ function CMDIA.credit_init()
         {name = "GameShowWerewolf", section = "Joker"},
         {name = "DerpVN12", section = "Art"},
         {name = "someonenooneever", section = "Art"},
+        {name = "Recycled Scraps", section = "Music"},
     }
 end
 
