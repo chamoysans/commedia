@@ -7,23 +7,22 @@ CMDIA = {
     music = {
         options = {
             "Vanilla",
+            "Going in blind",
             "Bonne Soiree",
-            "B-Side",
             "Monkey Buisness",
             "Raise the stakes",
-            "Going in blind",
         },
         keys = {
             "vanilla",
+            "going_in_blind",
             "bonne_soiree",
-            "b_side",
             "monkey_buisness",
             "raise_the_stakes",
-            "going_in_blind",
         },
     },
     config = SMODS.current_mod.config,
 }
+
 
 to_big = to_big or function(x) return x end
 
@@ -116,48 +115,43 @@ Game.main_menu = function(change_context)
     return ret
 end
 
-local music_choices = CMDIA.config.Music
+function CMDIA.music_upd()
+    local music_choice_index = CMDIA.config.current_music or 2
 
-local music_choice
+    local music_choice = CMDIA.music.keys[music_choice_index]
 
-for k, v in pairs(music_choices) do
-    if v then
-        music_choice = k
-        goto music
-    end
+    SMODS.Sound({
+        key = "music1",
+        path = music_choice .. "/music1." .. (CMDIA.config.current_music == 2 and "mp3" or "ogg"),
+        replace = "music1"
+    })
+
+    SMODS.Sound({
+        key = "music2",
+        path = music_choice .. "/music2." .. (CMDIA.config.current_music == 2 and "mp3" or "ogg"),
+        replace = "music2"
+    })
+
+    SMODS.Sound({
+        key = "music3",
+        path = music_choice .. "/music3." .. (CMDIA.config.current_music == 2 and "mp3" or "ogg"),
+        replace = "music3"
+    })
+
+    SMODS.Sound({
+        key = "music4",
+        path = music_choice .. "/music4." .. (CMDIA.config.current_music == 2 and "mp3" or "ogg"),
+        replace = "music4"
+    })
+
+    SMODS.Sound({
+        key = "music5",
+        path = music_choice .. "/music5." .. (CMDIA.config.current_music == 2 and "mp3" or "ogg"),
+        replace = "music5"
+    })
 end
 
-::music::
-
-SMODS.Sound({
-    key = "music1",
-    path = music_choice .. "/music1.mp3",
-    replace = "music1"
-})
-
-SMODS.Sound({
-    key = "music2",
-    path = music_choice .. "/music2.mp3",
-    replace = "music2"
-})
-
-SMODS.Sound({
-    key = "music3",
-    path = music_choice .. "/music3.mp3",
-    replace = "music3"
-})
-
-SMODS.Sound({
-    key = "music4",
-    path = music_choice .. "/music4.mp3",
-    replace = "music4"
-})
-
-SMODS.Sound({
-    key = "music5",
-    path = music_choice .. "/music5.mp3",
-    replace = "music5"
-})
+CMDIA.music_upd()
 
 SMODS.Atlas{
     key = 'balatro',
@@ -169,4 +163,4 @@ SMODS.Atlas{
 
 assert(SMODS.load_file("src/jokers.lua"))()
 assert(SMODS.load_file("src/credit-tab.lua"))()
--- assert(SMODS.load_file("src/config-tab.lua"))()
+assert(SMODS.load_file("src/config-tab.lua"))()

@@ -324,7 +324,7 @@ local jokers = {
     ['jimbos_comet'] = {
         config = {
             extra = {
-                level_ups = 2
+                level_ups = 1
             }
         },
         pos = { x = 5, y = 0 },
@@ -361,6 +361,24 @@ local jokers = {
                     })
                 end
             end
+        end,
+    },
+    ['filibuster'] = {
+        config = {
+            extra = {
+            }
+        },
+        pos = { x = 6, y = 0 },
+        rarity = 2,
+        cost = 6,
+        unlocked = true,
+        discovered = true,
+        blueprint_compat = false,
+        atlas = "cmdia_jokers",
+        loc_vars = function(self, info_queue, card)
+            info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "yellow-hammer", colours = { G.C.FILTER, G.C.WHITE }}}
+            info_queue[#info_queue+1] = {key = 'cmdia_credit_art', set = 'Other', vars = { "yellow-hammer", colours = { G.C.FILTER, G.C.WHITE }}}
+            return { vars = {} }
         end,
     },
 }

@@ -53,7 +53,15 @@ return {
                 name = "Jimbo's Comet",
                 text = {
                     "{C:planet}Planet{} cards upgrade",
-                    "{C:green}#1#{} additional times,",
+                    "{C:green}#1#{} additional time,",
+                },
+            },
+            j_cmdia_filibuster = {
+                name = "Filibuster",
+                text = {
+                    "Round does not",
+                    "end until {C:attention}final{}",
+                    "{C:attention}hand{} is played."
                 },
             },
         },
@@ -120,7 +128,10 @@ return {
                             "Theseus' Joker"
                         },
                         ["GameShowWerewolf"] = {
-                            "Joker's Comet"
+                            "Jimbo's Comet"
+                        },
+                        ["yellow-hammer"] = {
+                            "Filibuster"
                         },
                     },
                     Art = {
@@ -130,12 +141,36 @@ return {
                         ["someonenooneever"] = {
                             "Dramatist"
                         },
+                        ["yellow-hammer"] = {
+                            "Filibuster"
+                        },
                     },
                     Music = {
                         ["Recycled Scraps"] = {
-                            "Going in blind (Underrated TBH)"
+                            "Going in blind"
                         },
-                        
+                    },
+                },
+                music = {
+                    ["vanilla"] = {
+                        "Vanilla",
+                        "By: Louis F",
+                    },
+                    ["going_in_blind"] = {
+                        "Going in Blind",
+                        "By: Recycled Scraps",
+                    },
+                    ["bonne_soiree"] = {
+                        "Bonne Soiree",
+                        "By: Vongola",
+                    },
+                    ["monkey_buisness"] = {
+                        "Monkey Buisness",
+                        "By: Bombaflex",
+                    },
+                    ["raise_the_stakes"] = {
+                        "Raise the stakes",
+                        "By: JohnathanSucks",
                     },
                 },
                 config_music_select = "Music"

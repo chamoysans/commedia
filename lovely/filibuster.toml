@@ -1,0 +1,25 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = """
+if self.STATE == self.STATES.NEW_ROUND then
+            self:update_new_round(dt)
+        end
+"""
+position = "at"
+payload = """
+if self.STATE == self.STATES.NEW_ROUND then
+    if (next(SMODS.find_card("j_cmdia_filibuster")) and G.GAME.current_round.hands_left ~= 0 ) then
+        self:update_draw_to_hand(dt)
+    else
+        self:update_new_round(dt)
+    end
+end
+"""
+match_indent = true
