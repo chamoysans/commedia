@@ -64,6 +64,17 @@ return {
                     "{C:attention}hand{} is played."
                 },
             },
+            j_cmdia_eternal = {
+                name = "Eternal Joker",
+                text = {
+                    "When {C:attention}Boss Blind{} is",
+                    "defeated, apply",
+                    "{C:dark_edition}Eternal{} to Joker",
+                    "to the right,",
+                    "{C:dark_edition}Eternal{} Jokers give",
+                    "{X:mult,C:white}X#1#{} Mult"
+                }
+            }
         },
         Other={
             cmdia_credit = {
@@ -104,6 +115,7 @@ return {
         collabs={},
         dictionary={
             cmdia_plucked = 'Plucked!',
+            cmdia_locked = 'Locked!',
             cmdia_credit_next = 'Next',
             cmdia_credit_prev = 'Previous',
             cmdia_credit_page = 'Page',
@@ -133,6 +145,9 @@ return {
                         ["yellow-hammer"] = {
                             "Filibuster"
                         },
+                        ["SomeBrowser227"] = {
+                            "Eternal Joker"
+                        },
                     },
                     Art = {
                         ["DerpVN12"] = {
@@ -144,10 +159,22 @@ return {
                         ["yellow-hammer"] = {
                             "Filibuster"
                         },
+                        ["SomeBrowser227"] = {
+                            "Eternal Joker"
+                        },
                     },
                     Music = {
                         ["Recycled Scraps"] = {
                             "Going in blind"
+                        },
+                        ["Vongola"] = {
+                            "Bonne Soiree"
+                        },
+                        ["Bombaflex"] = {
+                            "Monkey Buisness"
+                        },
+                        ["JonathanSucks"] = {
+                            "Raise the stakes"
                         },
                     },
                 },

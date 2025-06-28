@@ -131,7 +131,7 @@ local jokers = {
 
                 local clovers = SMODS.find_card("j_cmdia_fourleaf_clover")
 
-                if context.cmdia_clovercard.ability.extra.temp ~= card.ability.extra.temp then print("NUH UH | CMDIA "); return end
+                if context.cmdia_clovercard.ability.extra.temp ~= card.ability.extra.temp then return end
 
                 card.ability.extra.triggers = card.ability.extra.triggers - 1
                 
@@ -380,6 +380,49 @@ local jokers = {
             info_queue[#info_queue+1] = {key = 'cmdia_credit_art', set = 'Other', vars = { "yellow-hammer", colours = { G.C.FILTER, G.C.WHITE }}}
             return { vars = {} }
         end,
+    },
+    ['eternal'] = {
+        config = {
+            extra = {
+                xmult = 3
+            }
+        },
+        pos = { x = 7, y = 0 },
+        rarity = 3,
+        cost = 7,
+        unlocked = true,
+        discovered = true,
+        blueprint_compat = false,
+        atlas = "cmdia_jokers",
+        loc_vars = function(self, info_queue, card)
+            info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "SomeBrowser227", colours = { G.C.FILTER, G.C.WHITE }}}
+            info_queue[#info_queue+1] = {key = 'cmdia_credit_art', set = 'Other', vars = { "SomeBrowser227", colours = { G.C.FILTER, G.C.WHITE }}}
+            return { vars = {card.ability.extra.xmult} }
+        end,
+        calculate = function(self, card, context)
+            if context.end_of_round and not context.blueprint and G.GAME.blind.boss and not (G.GAME.blind.config and G.GAME.blind.config.bonus) then
+                for i = 1, #G.jokers.cards do
+                    if G.jokers.cards[i] == card then
+                        if i < #G.jokers.cards then
+                            G.jokers.cards[i + 1].ability.eternal = true -- idfc about noneternal compat
+                            SMODS.calculate_effect({message = CMDIA.get_dictionary("cmdia_locked")}, G.jokers.cards[i + 1])
+                        end
+                    end
+                end
+            end
+            if context.other_joker and (context.other_joker.ability.eternal) and not context.blueprint then
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        context.other_joker:juice_up(0.5, 0.5)
+                        return true
+                    end
+                })) 
+                return {
+                    message = localize{type='variable',key='a_xmult',vars={card.ability.extra.xmult}},
+                    Xmult_mod = card.ability.extra.xmult
+                }
+            end
+        end
     },
 }
 
