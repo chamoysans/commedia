@@ -8,12 +8,13 @@ function CMDIA.credit_init()
         {name = "Pusheenunderscore", section = "Joker"},
         {name = "GameShowWerewolf", section = "Joker"},
         {name = "yellow-hammer", section = "Joker"},
-        {name = "SomeBrowser227", section = "Joker"},
+        {name = "ihavetoclear", section = "Joker"},
+        {name = "Wish_Solid", section = "Joker"},
 
         {name = "DerpVN12", section = "Art"},
         {name = "someonenooneever", section = "Art"},
         {name = "yellow-hammer", section = "Art"},
-        {name = "SomeBrowser227", section = "Art"},
+        {name = "ihavetoclear", section = "Art"},
 
         {name = "Recycled Scraps", section = "Music"},
         {name = "Vongola", section = "Music"},

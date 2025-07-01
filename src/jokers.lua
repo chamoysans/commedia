@@ -118,13 +118,15 @@ local jokers = {
         blueprint_compat = false,
         atlas = "cmdia_jokers",
         loc_vars = function(self, info_queue, card)
-            info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "u/DerpVN112", colours = { G.C.WHITE, HEX("77d96a") }}}
-            info_queue[#info_queue+1] = {key = 'cmdia_credit_art', set = 'Other', vars = { "u/DerpVN112", colours = { G.C.WHITE, HEX("77d96a") }}}
+            if CMDIA.config.credit_tooltips then
+                info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "u/DerpVN112", colours = { G.C.WHITE, HEX("77d96a") }}}
+                info_queue[#info_queue+1] = {key = 'cmdia_credit_art', set = 'Other', vars = { "u/DerpVN112", colours = { G.C.WHITE, HEX("77d96a") }}}
+            end
             return { vars = {card.ability.extra.triggers, (card.ability.extra.triggers == 1) and "y" or "ies"} }
         end,
         calculate = function(self, card, context)
 
-            if context.cmdia_clover and card.ability and card.ability.extra then
+            if context.cmdia_clover and card.ability and card.ability.extra and not context.blueprint then
 
                 
                 if not card.ability.extra.temp_perm then card.ability.extra.temp = math.random() * math.random() end
@@ -190,8 +192,10 @@ local jokers = {
         blueprint_compat = true,
         atlas = "cmdia_jokers",
         loc_vars = function(self, info_queue, card)
-            info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "u/someonenoonenever", colours = { G.C.FILTER, G.C.WHITE }}}
-            info_queue[#info_queue+1] = {key = 'cmdia_credit_art', set = 'Other', vars = { "u/someonenoonenever", colours = { G.C.FILTER, G.C.WHITE }}}
+            if CMDIA.config.credit_tooltips then
+                info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "u/someonenoonenever", colours = { G.C.FILTER, G.C.WHITE }}}
+                info_queue[#info_queue+1] = {key = 'cmdia_credit_art', set = 'Other', vars = { "u/someonenoonenever", colours = { G.C.FILTER, G.C.WHITE }}}
+            end
             return { vars = {} }
         end,
         calculate = function(self, card, context)
@@ -261,7 +265,9 @@ local jokers = {
         },
         atlas = "cmdia_jokers",
         loc_vars = function(self, info_queue, card)
-            info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "Friazes", colours = { G.C.FILTER, G.C.WHITE }}}
+            if CMDIA.config.credit_tooltips then
+                info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "Friazes", colours = { G.C.FILTER, G.C.WHITE }}}
+            end
             return { vars = {} }
         end,
         calculate = function(self, card, context)
@@ -280,7 +286,9 @@ local jokers = {
         blueprint_compat = false,
         atlas = "cmdia_jokers",
         loc_vars = function(self, info_queue, card)
-            info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "pie-en-argent", colours = { G.C.FILTER, G.C.WHITE }}}
+            if CMDIA.config.credit_tooltips then
+                info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "pie-en-argent", colours = { G.C.FILTER, G.C.WHITE }}}
+            end
             return { vars = {} }
         end,
         calculate = function(self, card, context)
@@ -300,7 +308,9 @@ local jokers = {
         blueprint_compat = false,
         atlas = "cmdia_jokers",
         loc_vars = function(self, info_queue, card)
-            info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "Pusheenunderscore", colours = { G.C.FILTER, G.C.WHITE }}}
+            if CMDIA.config.credit_tooltips then
+                info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "Pusheenunderscore", colours = { G.C.FILTER, G.C.WHITE }}}
+            end
             return { vars = {card.ability.extra.slots} }
         end,
         add_to_deck = function(self, card, from_debuff)
@@ -335,11 +345,13 @@ local jokers = {
         blueprint_compat = false, -- false cause hell NO i am not doing all that stupid shit with blueprint
         atlas = "cmdia_jokers",
         loc_vars = function(self, info_queue, card)
-            info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "GameShowWerewolf", colours = { G.C.WHITE, HEX("de2137") }}}
+            if CMDIA.config.credit_tooltips then
+                info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "GameShowWerewolf", colours = { G.C.WHITE, HEX("de2137") }}}
+            end
             return { vars = {card.ability.extra.level_ups} }
         end,
         calculate = function(self, card, context)
-            if context.using_consumeable and (not context.CMDIA_comet) then
+            if context.using_consumeable and (not context.CMDIA_comet) and not context.blueprint then
 
                 -- planet cards
                 if context.consumeable.ability.set == 'Planet' then
@@ -376,15 +388,17 @@ local jokers = {
         blueprint_compat = false,
         atlas = "cmdia_jokers",
         loc_vars = function(self, info_queue, card)
-            info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "yellow-hammer", colours = { G.C.FILTER, G.C.WHITE }}}
-            info_queue[#info_queue+1] = {key = 'cmdia_credit_art', set = 'Other', vars = { "yellow-hammer", colours = { G.C.FILTER, G.C.WHITE }}}
+            if CMDIA.config.credit_tooltips then
+                info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "yellow-hammer", colours = { G.C.FILTER, G.C.WHITE }}}
+                info_queue[#info_queue+1] = {key = 'cmdia_credit_art', set = 'Other', vars = { "yellow-hammer", colours = { G.C.FILTER, G.C.WHITE }}}
+            end
             return { vars = {} }
         end,
     },
     ['eternal'] = {
         config = {
             extra = {
-                xmult = 3
+                xmult = 1.5
             }
         },
         pos = { x = 7, y = 0 },
@@ -395,8 +409,11 @@ local jokers = {
         blueprint_compat = false,
         atlas = "cmdia_jokers",
         loc_vars = function(self, info_queue, card)
-            info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "SomeBrowser227", colours = { G.C.FILTER, G.C.WHITE }}}
-            info_queue[#info_queue+1] = {key = 'cmdia_credit_art', set = 'Other', vars = { "SomeBrowser227", colours = { G.C.FILTER, G.C.WHITE }}}
+            if CMDIA.config.credit_tooltips then
+                info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "ihavetoclear", colours = { G.C.FILTER, G.C.WHITE }}}
+                info_queue[#info_queue+1] = {key = 'cmdia_credit_art', set = 'Other', vars = { "ihavetoclear", colours = { G.C.FILTER, G.C.WHITE }}}
+                info_queue[#info_queue+1] = {key = 'cmdia_modified', set = 'Other', vars = {colours = { G.C.FILTER, G.C.WHITE }}}
+            end
             return { vars = {card.ability.extra.xmult} }
         end,
         calculate = function(self, card, context)
@@ -421,6 +438,73 @@ local jokers = {
                     message = localize{type='variable',key='a_xmult',vars={card.ability.extra.xmult}},
                     Xmult_mod = card.ability.extra.xmult
                 }
+            end
+        end
+    },
+    ['impostor'] = {
+        config = {
+            extra = {
+            }
+        },
+        pos = { x = 8, y = 0 },
+        rarity = 2,
+        cost = 7,
+        unlocked = true,
+        discovered = true,
+        blueprint_compat = false,
+        atlas = "cmdia_jokers",
+        loc_vars = function(self, info_queue, card)
+            if CMDIA.config.credit_tooltips then
+                info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "Wish_Solid", colours = { G.C.FILTER, G.C.WHITE }}}
+            end
+            return { vars = {card.ability.extra.xmult} }
+        end,
+        calculate = function(self, card, context)
+            if not context.CMDIA then return end
+            if context.CMDIA.modify_hand_before and context.CMDIA.hand and not context.blueprint then
+                local hand = context.CMDIA.hand
+                local suitsFound = {
+                    _buffer = {},
+                }
+                for i = 1, #hand do
+                    suitsFound._buffer[#suitsFound._buffer + 1] = {card = hand[i], suit = hand[i]:CMDIA_get_suit()}
+
+                end
+
+                for i, v in ipairs(suitsFound._buffer) do
+                    if not suitsFound[v.suit] then suitsFound[v.suit] = 0 end
+
+                    if v.suit == "All" then
+                        for j, w in ipairs(SMODS.Suits) do
+                            suitsFound[w] = suitsFound[w] + 1
+                        end
+                    else
+                        suitsFound[v.suit] = suitsFound[v.suit] + 1
+                    end
+
+                    
+                end
+
+                local transformCard = nil
+                local transformSuit = ""
+                for suit, count in pairs(suitsFound) do
+                    if suit ~= "_buffer" and count >= 4 then
+                        transformSuit = suit
+                        for _, entry in ipairs(suitsFound._buffer) do
+                            if entry.suit ~= suit then
+                                transformCard = entry.card
+                                break
+                            end
+                        end
+                        break
+                    end
+                end
+
+                if transformCard then
+                    SMODS.calculate_effect({message = CMDIA.get_dictionary("cmdia_sus")}, transformCard)
+                    SMODS.change_base(transformCard, transformSuit)
+                end
+
             end
         end
     },

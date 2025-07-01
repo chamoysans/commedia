@@ -74,6 +74,16 @@ return {
                     "{C:dark_edition}Eternal{} Jokers give",
                     "{X:mult,C:white}X#1#{} Mult"
                 }
+            },
+            j_cmdia_impostor = {
+                name = "Impostor",
+                text = {
+                    "If your hand contains ",
+                    "{C:attention}4 cards{} of one suit,",
+                    "transform the other card",
+                    "into that suit and",
+                    "score as a {C:attention}Flush.{}",
+                }
             }
         },
         Other={
@@ -99,6 +109,14 @@ return {
                     "It will be changed later",
                 },
             },
+            cmdia_modified = {
+                name = "Modified Joker",
+                text = {
+                    "This Joker was modified",
+                    "to better balance",
+                    "the game,",
+                },
+            },
         },
         Planet={},
         Spectral={},
@@ -121,6 +139,7 @@ return {
             cmdia_credit_page = 'Page',
             cmdia_credit_came_up = 'Came up with',
             cmdia_credit_and = 'and',
+            cmdia_sus = 'Sus!',
             cmdia = {
                 credit = {
                     Joker = {
@@ -145,7 +164,7 @@ return {
                         ["yellow-hammer"] = {
                             "Filibuster"
                         },
-                        ["SomeBrowser227"] = {
+                        ["ihavetoclear"] = {
                             "Eternal Joker"
                         },
                     },
@@ -159,7 +178,7 @@ return {
                         ["yellow-hammer"] = {
                             "Filibuster"
                         },
-                        ["SomeBrowser227"] = {
+                        ["ihavetoclear"] = {
                             "Eternal Joker"
                         },
                     },
