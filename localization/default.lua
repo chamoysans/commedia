@@ -84,7 +84,42 @@ return {
                     "into that suit and",
                     "score as a {C:attention}Flush.{}",
                 }
-            }
+            },
+            j_cmdia_flat_earth = {
+                name = "Flat Earth",
+                text = {
+                    "{C:attention}Retrigger{} each scoring card",
+                    "per {C:planet}10{} Levels of played hand,",
+                    "half base {C:chips}Chips{} {C:attention}&{} {C:mult}Mult,{}",
+                }
+            },
+            j_cmdia_commedia = {
+                name = "r/commedia",
+                text = {
+                    "Gives {C:chips}+X{} chips and {C:mult}+Y mult{}",
+                    "where X is the number of ",
+                    "upvotes on the most recent post",
+                    "and Y is the number of comments",
+                    "{C:inactive}(Currently: +#1# Chips & +#2# Mult){}"
+                }
+            },
+            j_cmdia_tuning_fork = {
+                name = "Tuning Fork",
+                text = {
+                    "{C:attention}Retrigger{} all scored",
+                    "cards without enhancements,"
+                }
+            },
+            j_cmdia_shapeshifter = {
+                name = "Shapeshifter",
+                text = {
+                    "Gains {X:mult,C:white}x0.2{} Mult every",
+                    "time a hand contains both",
+                    "[Suit 1] and [Suit 2],",
+                    "suits change every round,",
+                    "{C:inactive}(Does not change depending on your deck){}",
+                }
+            },
         },
         Other={
             cmdia_credit = {
@@ -117,6 +152,14 @@ return {
                     "the game,",
                 },
             },
+            cmdia_modified_hard = {
+                name = "Modified Joker",
+                text = {
+                    "This Joker was modified",
+                    "due to the original idea",
+                    "being too hard,",
+                },
+            },
         },
         Planet={},
         Spectral={},
@@ -140,6 +183,7 @@ return {
             cmdia_credit_came_up = 'Came up with',
             cmdia_credit_and = 'and',
             cmdia_sus = 'Sus!',
+            cmdia_halved = 'Halved!',
             cmdia = {
                 credit = {
                     Joker = {

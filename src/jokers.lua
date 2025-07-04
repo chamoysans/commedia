@@ -461,6 +461,7 @@ local jokers = {
         end,
         calculate = function(self, card, context)
             if not context.CMDIA then return end
+            if context.blueprint then return end
             if context.CMDIA.modify_hand_before and context.CMDIA.hand and not context.blueprint then
                 local hand = context.CMDIA.hand
                 local suitsFound = {
@@ -508,6 +509,172 @@ local jokers = {
             end
         end
     },
+    ['flat_earth'] = {
+        config = {
+            extra = {
+                repetitions = 0
+            }
+        },
+        pos = { x = 9, y = 0 },
+        rarity = 2,
+        cost = 7,
+        unlocked = true,
+        discovered = true,
+        blueprint_compat = true, -- do it if you dare (unless ur doing a lucky cat build then why not)
+        atlas = "cmdia_jokers",
+        loc_vars = function(self, info_queue, card)
+            if CMDIA.config.credit_tooltips then
+                info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "StatisticalMistake", colours = { G.C.FILTER, G.C.WHITE }}}
+            end
+            return { vars = {card.ability.extra.xmult} }
+        end,
+        calculate = function(self, card, context)
+            if context.repetition and context.cardarea == G.play then
+                if context.other_card then
+                    local reps = math.floor((to_number(G.GAME.hands[G.GAME.last_hand_played].level) or 1)*0.1)
+                    return {
+                        message = localize('k_again_ex'),
+                        repetitions = reps,
+                        card = card
+                    }
+                end
+            end
+            if context.CMDIA and context.CMDIA.blind_modify_hand then
+                local s = context.CMDIA.hand_values
+
+                s[1] = math.max(math.floor(s[1]*0.5 + 0.5), 1)
+                s[2] = math.max(math.floor(s[2]*0.5 + 0.5), 0)
+                s[3] = true
+
+                SMODS.calculate_effect({message = CMDIA.get_dictionary("cmdia_halved")}, context.blueprint_card or card)
+            end
+        end
+    },
+    --[[
+    ['commedia'] = {
+        config = {
+            extra = {
+                mult = 0, -- will update this manually cause im not doing api stuff
+                chips = 0,
+            }
+        },
+        pos = { x = 0, y = 1 },
+        rarity = 2,
+        cost = 7,
+        unlocked = true,
+        discovered = true,
+        blueprint_compat = true,
+        atlas = "cmdia_jokers",
+        loc_vars = function(self, info_queue, card)
+            if CMDIA.config.credit_tooltips then
+                info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "egbertian413", colours = { G.C.FILTER, G.C.WHITE }}}
+            end
+            return { vars = {card.ability.extra.chips, card.ability.extra.mult} }
+        end,
+        calculate = function(self, card, context)
+            if context.repetition and context.cardarea == G.play then
+                if context.other_card then
+                    local reps = math.floor((to_number(G.GAME.hands[G.GAME.last_hand_played].level) or 1)*0.1)
+                    return {
+                        message = localize('k_again_ex'),
+                        repetitions = reps,
+                        card = card
+                    }
+                end
+            end
+            if context.CMDIA and context.CMDIA.blind_modify_hand then
+                local s = context.CMDIA.hand_values
+
+                s[1] = math.max(math.floor(s[1]*0.5 + 0.5), 1)
+                s[2] = math.max(math.floor(s[2]*0.5 + 0.5), 0)
+                s[3] = true
+
+                SMODS.calculate_effect({message = CMDIA.get_dictionary("cmdia_halved")}, context.blueprint_card or card)
+            end
+        end
+    },
+    ['tuning_fork'] = {
+        config = {
+            extra = {
+                repetitions = 0
+            }
+        },
+        pos = { x = 1, y = 1 },
+        rarity = 2,
+        cost = 7,
+        unlocked = true,
+        discovered = true,
+        blueprint_compat = true,
+        atlas = "cmdia_jokers",
+        loc_vars = function(self, info_queue, card)
+            if CMDIA.config.credit_tooltips then
+                info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "T_A_amb", colours = { G.C.FILTER, G.C.WHITE }}}
+            end
+            return { vars = {card.ability.extra.xmult} }
+        end,
+        calculate = function(self, card, context)
+            if context.repetition and context.cardarea == G.play then
+                if context.other_card then
+                    local reps = math.floor((to_number(G.GAME.hands[G.GAME.last_hand_played].level) or 1)*0.1)
+                    return {
+                        message = localize('k_again_ex'),
+                        repetitions = reps,
+                        card = card
+                    }
+                end
+            end
+            if context.CMDIA and context.CMDIA.blind_modify_hand then
+                local s = context.CMDIA.hand_values
+
+                s[1] = math.max(math.floor(s[1]*0.5 + 0.5), 1)
+                s[2] = math.max(math.floor(s[2]*0.5 + 0.5), 0)
+                s[3] = true
+
+                SMODS.calculate_effect({message = CMDIA.get_dictionary("cmdia_halved")}, context.blueprint_card or card)
+            end
+        end
+    },
+    ['shapeshifter'] = {
+        config = {
+            extra = {
+                xmult = 0.2
+            }
+        },
+        pos = { x = 2, y = 1 },
+        rarity = 3,
+        cost = 7,
+        unlocked = true,
+        discovered = true,
+        blueprint_compat = true,
+        atlas = "cmdia_jokers",
+        loc_vars = function(self, info_queue, card)
+            if CMDIA.config.credit_tooltips then
+                info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "GoinXwell1", colours = { G.C.FILTER, G.C.WHITE }}}
+            end
+            return { vars = {card.ability.extra.xmult} }
+        end,
+        calculate = function(self, card, context)
+            if context.repetition and context.cardarea == G.play then
+                if context.other_card then
+                    local reps = math.floor((to_number(G.GAME.hands[G.GAME.last_hand_played].level) or 1)*0.1)
+                    return {
+                        message = localize('k_again_ex'),
+                        repetitions = reps,
+                        card = card
+                    }
+                end
+            end
+            if context.CMDIA and context.CMDIA.blind_modify_hand then
+                local s = context.CMDIA.hand_values
+
+                s[1] = math.max(math.floor(s[1]*0.5 + 0.5), 1)
+                s[2] = math.max(math.floor(s[2]*0.5 + 0.5), 0)
+                s[3] = true
+
+                SMODS.calculate_effect({message = CMDIA.get_dictionary("cmdia_halved")}, context.blueprint_card or card)
+            end
+        end
+    },]]
 }
 
 -- four leaf clover stuff --
