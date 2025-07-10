@@ -633,11 +633,12 @@ local jokers = {
                 SMODS.calculate_effect({message = CMDIA.get_dictionary("cmdia_halved")}, context.blueprint_card or card)
             end
         end
-    },
+    },]]
     ['shapeshifter'] = {
         config = {
             extra = {
-                xmult = 0.2
+                gainmult = 0.2,
+                xmult = 1
             }
         },
         pos = { x = 2, y = 1 },
@@ -651,31 +652,48 @@ local jokers = {
             if CMDIA.config.credit_tooltips then
                 info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "GoinXwell1", colours = { G.C.FILTER, G.C.WHITE }}}
             end
-            return { vars = {card.ability.extra.xmult} }
+            local valcard = G.GAME.current_round.shape_card
+            return { vars = {card.ability.extra.gainmult, card.ability.extra.xmult, valcard.suit1, valcard.suit2} }
         end,
         calculate = function(self, card, context)
-            if context.repetition and context.cardarea == G.play then
-                if context.other_card then
-                    local reps = math.floor((to_number(G.GAME.hands[G.GAME.last_hand_played].level) or 1)*0.1)
+            if context.joker_main then
+                local check = 0
+                local valcard = G.GAME.current_round.shape_card
+                for i = 1, #context.scoring_hand do
+                    if (context.scoring_hand[i]:is_suit(valcard.suit1) or context.scoring_hand[i]:is_suit(valcard.suit2)) then check = check + 1 end
+                end
+                if not context.blueprint_card then
+                    card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.gainmult
+                    SMODS.calculate_effect({message = localize('k_upgrade_ex')}, card)
+                end
+                if check > 1 then
                     return {
-                        message = localize('k_again_ex'),
-                        repetitions = reps,
-                        card = card
+                        message = localize{type='variable',key='a_xmult',vars={card.ability.extra.xmult}},
+                        Xmult_mod = card.ability.extra.xmult
                     }
                 end
             end
-            if context.CMDIA and context.CMDIA.blind_modify_hand then
-                local s = context.CMDIA.hand_values
-
-                s[1] = math.max(math.floor(s[1]*0.5 + 0.5), 1)
-                s[2] = math.max(math.floor(s[2]*0.5 + 0.5), 0)
-                s[3] = true
-
-                SMODS.calculate_effect({message = CMDIA.get_dictionary("cmdia_halved")}, context.blueprint_card or card)
-            end
         end
-    },]]
+    },
 }
+
+CMDIA.lib.addCycle(
+    "shape",
+    {suit1 = "Spades", suit2 = "Hearts"},
+    function(card)
+        local suits = {}
+        local thingy = 0
+        for k, v in ipairs({'Spades','Hearts','Clubs','Diamonds'}) do
+            if (thingy and (v ~= card.suit2 and v ~= card.suit1) or (v ~= card.suit1)) then suits[#suits + 1] = v; thingy = 1 end
+        end
+        local shape_card1 = pseudorandom_element(suits, pseudoseed('shape'..G.GAME.round_resets.ante))
+        suits[shape_card1] = nil
+        card.suit1 = shape_card1
+        local shape_card2 = pseudorandom_element(suits, pseudoseed('shifter'..G.GAME.round_resets.ante))
+        suits[shape_card2] = nil
+        card.suit2 = shape_card2
+    end 
+)
 
 -- four leaf clover stuff --
 

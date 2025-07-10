@@ -161,6 +161,7 @@ SMODS.Atlas{
     prefix_config = { key = false }
 }
 
+assert(SMODS.load_file("src/lib.lua"))()
 assert(SMODS.load_file("src/jokers.lua"))()
 assert(SMODS.load_file("src/credit-tab.lua"))()
 assert(SMODS.load_file("src/config-tab.lua"))()

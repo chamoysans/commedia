@@ -113,11 +113,12 @@ return {
             j_cmdia_shapeshifter = {
                 name = "Shapeshifter",
                 text = {
-                    "Gains {X:mult,C:white}x0.2{} Mult every",
+                    "Gains {X:mult,C:white}X#1#{} Mult every",
                     "time a hand contains both",
-                    "[Suit 1] and [Suit 2],",
+                    "#3# and #4#,",
                     "suits change every round,",
                     "{C:inactive}(Does not change depending on your deck){}",
+                    "{C:inactive}(Currently: X#2#){}",
                 }
             },
         },
