@@ -2,6 +2,9 @@
 
 CMDIA.lib = {
     _buffer = {cycles = {}, values = {}, def_values = {}},
+    jkr = {
+        recycler_jkrs = {}
+    }
 }
 
 CMDIA.lib.addCycle = function(id, values, func)
@@ -25,4 +28,21 @@ function reset_ancient_card()
             end
         end
     end
+end
+
+-- for recycler (joker)
+
+CMDIA.lib.recycler_insert = function(id, scalingVals)
+    if not id then
+        error("how tf did you make the id (for recycler inserting) nil 🥀")
+    end
+    if (not scalingVals) then
+        error("how tf did you make scalingVals to modify nil 🥀 (recycler inserting)")
+    end
+    if type(scalingVals) ~= "table" and type(scalingVals) ~= "number" then
+        error("wrong type for scalingVals bro 🥀 (recycler inserting)")
+    end
+    CMDIA.lib.jkr.recycler_jkrs[id] = {
+        scalingVals = scalingVals
+    }
 end

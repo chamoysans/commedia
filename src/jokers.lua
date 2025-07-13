@@ -102,6 +102,20 @@ CMDIA.dramatist_tarots = {
 
 CMDIA.dramatist_tarots.tarot_usage.c_high_priestess = CMDIA.dramatist_tarots.tarot_usage.c_emperor
 
+local function tableAdd(t1, t2)
+    for k, v2 in pairs(t2) do
+        local v1 = t1[k]
+        if type(v1) == "table" and type(v2) == "table" then
+            tableAdd(v1, v2)
+        elseif type(v1) == "number" and type(v2) == "number" then
+            t1[k] = v1 + v2
+        else
+            t1[k] = v2
+        end
+    end
+    return t1
+end
+
 local jokers = {
     ['fourleaf_clover'] = {
         config = {
@@ -550,90 +564,6 @@ local jokers = {
             end
         end
     },
-    --[[
-    ['commedia'] = {
-        config = {
-            extra = {
-                mult = 0, -- will update this manually cause im not doing api stuff
-                chips = 0,
-            }
-        },
-        pos = { x = 0, y = 1 },
-        rarity = 2,
-        cost = 7,
-        unlocked = true,
-        discovered = true,
-        blueprint_compat = true,
-        atlas = "cmdia_jokers",
-        loc_vars = function(self, info_queue, card)
-            if CMDIA.config.credit_tooltips then
-                info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "egbertian413", colours = { G.C.FILTER, G.C.WHITE }}}
-            end
-            return { vars = {card.ability.extra.chips, card.ability.extra.mult} }
-        end,
-        calculate = function(self, card, context)
-            if context.repetition and context.cardarea == G.play then
-                if context.other_card then
-                    local reps = math.floor((to_number(G.GAME.hands[G.GAME.last_hand_played].level) or 1)*0.1)
-                    return {
-                        message = localize('k_again_ex'),
-                        repetitions = reps,
-                        card = card
-                    }
-                end
-            end
-            if context.CMDIA and context.CMDIA.blind_modify_hand then
-                local s = context.CMDIA.hand_values
-
-                s[1] = math.max(math.floor(s[1]*0.5 + 0.5), 1)
-                s[2] = math.max(math.floor(s[2]*0.5 + 0.5), 0)
-                s[3] = true
-
-                SMODS.calculate_effect({message = CMDIA.get_dictionary("cmdia_halved")}, context.blueprint_card or card)
-            end
-        end
-    },
-    ['tuning_fork'] = {
-        config = {
-            extra = {
-                repetitions = 0
-            }
-        },
-        pos = { x = 1, y = 1 },
-        rarity = 2,
-        cost = 7,
-        unlocked = true,
-        discovered = true,
-        blueprint_compat = true,
-        atlas = "cmdia_jokers",
-        loc_vars = function(self, info_queue, card)
-            if CMDIA.config.credit_tooltips then
-                info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "T_A_amb", colours = { G.C.FILTER, G.C.WHITE }}}
-            end
-            return { vars = {card.ability.extra.xmult} }
-        end,
-        calculate = function(self, card, context)
-            if context.repetition and context.cardarea == G.play then
-                if context.other_card then
-                    local reps = math.floor((to_number(G.GAME.hands[G.GAME.last_hand_played].level) or 1)*0.1)
-                    return {
-                        message = localize('k_again_ex'),
-                        repetitions = reps,
-                        card = card
-                    }
-                end
-            end
-            if context.CMDIA and context.CMDIA.blind_modify_hand then
-                local s = context.CMDIA.hand_values
-
-                s[1] = math.max(math.floor(s[1]*0.5 + 0.5), 1)
-                s[2] = math.max(math.floor(s[2]*0.5 + 0.5), 0)
-                s[3] = true
-
-                SMODS.calculate_effect({message = CMDIA.get_dictionary("cmdia_halved")}, context.blueprint_card or card)
-            end
-        end
-    },]]
     ['shapeshifter'] = {
         config = {
             extra = {
@@ -652,7 +582,7 @@ local jokers = {
             if CMDIA.config.credit_tooltips then
                 info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "GoinXwell1", colours = { G.C.FILTER, G.C.WHITE }}}
             end
-            local valcard = G.GAME.current_round.shape_card
+            local valcard = G.GAME.current_round.shape_card or {suit1 = "Spades", suit2 = "Clubs"}
             return { vars = {card.ability.extra.gainmult, card.ability.extra.xmult, valcard.suit1, valcard.suit2} }
         end,
         calculate = function(self, card, context)
@@ -675,7 +605,134 @@ local jokers = {
             end
         end
     },
+    ['automation'] = {
+        config = {
+            extra = {
+            }
+        },
+        pos = { x = 1, y = 1 },
+        rarity = 2,
+        cost = 7,
+        unlocked = true,
+        discovered = true,
+        blueprint_compat = false,
+        atlas = "cmdia_jokers",
+        loc_vars = function(self, info_queue, card)
+            if CMDIA.config.credit_tooltips then
+                info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "Zestyclose-Click6190", colours = { G.C.FILTER, G.C.WHITE }}}
+            end
+            return { vars = {} }
+        end,
+        calculate = function(self, card, context)
+            if context.before and not context.blueprint and (#context.scoring_hand < 5) then
+                local faces = {}
+                for k, v in ipairs(context.scoring_hand) do
+                    if not (v:is_face()) then 
+                        faces[#faces+1] = v
+                        v:set_ability(G.P_CENTERS.m_steel, nil, true)
+                        G.E_MANAGER:add_event(Event({
+                            func = function()
+                                v:juice_up()
+                                return true
+                            end
+                        })) 
+                    end
+                end
+                if #faces > 0 then 
+                    return {
+                        message = G.localization.misc.dictionary.cmdia_forged,
+                        colour = G.C.BLACK,
+                        card = card
+                    }
+                end
+            end
+        end
+    },
+    ['recycler'] = {
+        config = {
+            extra = {
+            }
+        },
+        pos = { x = 0, y = 1 },
+        rarity = 2,
+        cost = 5,
+        unlocked = true,
+        discovered = true,
+        blueprint_compat = false,
+        atlas = "cmdia_jokers",
+        loc_vars = function(self, info_queue, card)
+            if CMDIA.config.credit_tooltips then
+                info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "ihavetoclear", colours = { G.C.FILTER, G.C.WHITE }}}
+                info_queue[#info_queue+1] = {key = 'cmdia_credit_art', set = 'Other', vars = { "ihavetoclear, Me", colours = { G.C.FILTER, G.C.WHITE }}}
+            end
+            return { vars = {} }
+        end,
+        calculate = function(self, card, context)
+            local isDestroy = ((context.remove_playing_cards) or (context.using_consumeable and context.consumeable.ability.name == 'The Hanged Man') or (context.cards_destroyed and context.glass_shattered))
+            if (context.selling_card or isDestroy) and not context.blueprint then
+                local ammount = (context.cards_destroyed and context.glass_shattered) and #context.glass_shattered or 1
+                local jokers = {}
+                for i = 1, #G.jokers.cards do
+                    if CMDIA.lib.jkr.recycler_jkrs[G.jokers.cards[i].config.center.key] then
+                        jokers[#jokers + 1] = G.jokers.cards[i]
+                    end
+                end
+                for i = 1, ammount do
+                    for j = 1, #jokers do
+                        local jkr = jokers[j]
+                        local entry = CMDIA.lib.jkr.recycler_jkrs[jkr.config.center.key]
+                        tableAdd(jkr.ability, entry.scalingVals)
+                        G.E_MANAGER:add_event(Event({
+                            func = function()
+                                jkr:juice_up()
+                                return true
+                            end
+                        })) 
+                    end
+                end
+                if #jokers ~= 0 and ammount > 0 then
+                    return {
+                        message = CMDIA.get_dictionary("cmdia_scaled"),
+                        colour = G.C.BLACK,
+                        card = card
+                    }
+                end
+            end
+        end
+    },
 }
+
+-- for recycler (cryptid will fuck these up when misprint deck wjbaihsndijwnajionsdijm)
+
+-- Vanilla Jokers
+
+CMDIA.lib.recycler_insert("j_ceremonial", {mult = 2,})
+CMDIA.lib.recycler_insert("j_ride_the_bus", {mult = 1,})
+CMDIA.lib.recycler_insert("j_runner", {extra = {chips = 15,}})
+CMDIA.lib.recycler_insert("j_constellation", {x_mult = 0.1,}) -- doesnt work
+CMDIA.lib.recycler_insert("j_green_joker", {mult = 1,})
+
+CMDIA.lib.recycler_insert("j_red_card", {mult = 3})
+CMDIA.lib.recycler_insert("j_madness", {x_mult = 3})
+CMDIA.lib.recycler_insert("j_square", {extra = {chips = 4}})
+CMDIA.lib.recycler_insert("j_vampire", {Xmult = 0.1})
+CMDIA.lib.recycler_insert("j_hologram", {Xmult = 0.25})
+
+CMDIA.lib.recycler_insert("j_rocket", {extra = {dollars = 2}})
+CMDIA.lib.recycler_insert("j_obelisk", {Xmult = 0.2})
+CMDIA.lib.recycler_insert("j_lucky_cat", {Xmult = 0.25})
+CMDIA.lib.recycler_insert("j_flash", {mult = 2})
+CMDIA.lib.recycler_insert("j_trousers", {mult = 2})
+
+CMDIA.lib.recycler_insert("j_castle", {extra = {chips = 3}})
+CMDIA.lib.recycler_insert("j_campfire", {x_mult = 0.25})
+CMDIA.lib.recycler_insert("j_glass", {Xmult = 0.75})
+CMDIA.lib.recycler_insert("j_wee", {chips = 8})
+CMDIA.lib.recycler_insert("j_hit_the_road", {x_mult = 0.5})
+
+CMDIA.lib.recycler_insert("j_caino", {caino_xmult = 1})
+
+-- cycles
 
 CMDIA.lib.addCycle(
     "shape",

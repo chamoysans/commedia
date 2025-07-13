@@ -121,6 +121,24 @@ return {
                     "{C:inactive}(Currently: X#2#){}",
                 }
             },
+            j_cmdia_recycler = {
+                name = "Recycler",
+                text = {
+                    "When a card is",
+                    "{C:attention}Sold{} or {C:attention}Destroyed{},",
+                    "scale all scalable",
+                    "{C:attention}Jokers{}",
+                }
+            },
+            j_cmdia_automation = {
+                name = "Automation",
+                text = {
+                    "If a played hand contains",
+                    "{C:attention}4 cards{} or less,",
+                    "all scored Non-face Cards",
+                    "become {C:attention}Steel cards,{}",
+                }
+            },
         },
         Other={
             cmdia_credit = {
@@ -178,6 +196,8 @@ return {
         dictionary={
             cmdia_plucked = 'Plucked!',
             cmdia_locked = 'Locked!',
+            cmdia_forged = 'Forged!',
+            cmdia_scaled = 'Scaled!',
             cmdia_credit_next = 'Next',
             cmdia_credit_prev = 'Previous',
             cmdia_credit_page = 'Page',

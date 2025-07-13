@@ -1,24 +1,15 @@
 add:
 
-(by StatisticalMistake)
-Flat earth - probably uncommon? or rare? idfk
-retrigger each card in hand per 10 levels of hand, half base chip/mult
-(e.g. if pluto is level 10 first half the mult/chips then retrigger the card once, twice for level 20, etc)
+(by ihavetoclear)
+Recycler - Uncommon
+When a card is sold or destroyed,
+scale all scalable jokers
 
-this because both stamp and fully sealed is impossible 🥀
+AND
 
-for the next post's poll:
-option a:
-(in post 7, by GoinXwell1)
-Shapeshifter (Rare): Gains x0.2 Mult every time a hand contains both [Suit 1] and [Suit 2], suits change every round
-
-Suit rotation works like Ancient Joker and Castle, so no, you can't deck fix your way out of it.
-
-option b:
-(in post 5, by T_A_amb)
-Tuning fork: Retrigger all scored cards without enhancements 
-
-option c:
-
-(in post 1, by egbertian413)
-r/commedia Gives +X chips and +Y mult, where X is the number of upvotes on the most recent post and Y is the number of comments 
+(by Zestyclose-Click6190)
+Automation - Uncommon
+If a played hand contains
+4 cards or less,
+all scored Non-face Cards
+become Steel cards,
