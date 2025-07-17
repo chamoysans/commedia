@@ -713,7 +713,7 @@ CMDIA.lib.recycler_insert("j_constellation", {x_mult = 0.1,}) -- doesnt work
 CMDIA.lib.recycler_insert("j_green_joker", {mult = 1,})
 
 CMDIA.lib.recycler_insert("j_red_card", {mult = 3})
-CMDIA.lib.recycler_insert("j_madness", {x_mult = 3})
+CMDIA.lib.recycler_insert("j_madness", {x_mult = 0.5})
 CMDIA.lib.recycler_insert("j_square", {extra = {chips = 4}})
 CMDIA.lib.recycler_insert("j_vampire", {Xmult = 0.1})
 CMDIA.lib.recycler_insert("j_hologram", {Xmult = 0.25})
