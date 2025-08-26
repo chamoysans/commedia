@@ -1,0 +1,20 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "local rank_suffix = card.base.id == 14 and 2 or math.min(card.base.id+1, 14)"
+position = "after"
+payload = """
+local dramatists = SMODS.find_card("j_cmdia_dramatist")
+if next(SMODS.find_card("j_cmdia_dramatist")) then
+    for i = 1, #dramatists do
+        rank_suffix = rank_suffix == 14 and 2 or math.min(rank_suffix+1, 14)
+    end
+end
+"""
+match_indent = true

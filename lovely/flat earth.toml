@@ -1,0 +1,16 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1000
+
+# helper function
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "G.GAME.hands[text].visible = true"
+position = "after"
+payload = """
+G.SCORING = {}
+G.SCORING._buffer = {hand = G.GAME.hands[text]}
+"""
+match_indent = true

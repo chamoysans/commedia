@@ -1,0 +1,10 @@
+{
+	"id": "Commedia",
+	"name": "Commedia",
+	"author": ["taco78", "the entire community"],
+    "badge_colour": "7aadff",
+	"description": "Adds all of the communities suggestions, ideas, etc. (Modify in the config tab)",
+	"prefix": "cmdia",
+	"main_file": "main.lua",
+    "version": "0.0.4"
+}

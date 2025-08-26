@@ -1,0 +1,70 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = """
+if self.STATE == self.STATES.NEW_ROUND then
+            self:update_new_round(dt)
+        end
+"""
+position = "at"
+payload = """
+if self.STATE == self.STATES.NEW_ROUND then
+    local stanc_cards = SMODS.find_card("j_cmdia_stanczyk")
+    local stanc = next(stanc_cards) ~= nil
+
+    if stanc then G.GAME.current_round.CMDIA.stan_round = not G.GAME.current_round.CMDIA.stan_round end
+    if  (next(SMODS.find_card("j_cmdia_filibuster")) and G.GAME.current_round.hands_left ~= 0 ) or
+        (stanc and G.GAME.current_round.CMDIA.stan_round)
+    then
+        self:update_draw_to_hand(dt)
+        if stanc then
+            G.GAME.chips = 0
+            G.GAME.round_resets.lost = false
+            G.GAME.blind:juice_up()
+            G.GAME.current_round.hands_left = G.GAME.round_resets.hands
+            ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
+            ease_discard(
+                math.max(0, G.GAME.round_resets.discards + G.GAME.round_bonus.discards) - G.GAME.current_round.discards_left
+            )
+            G.FUNCS.draw_from_discard_to_deck()
+            G.STATE = 1
+            G.STATE_COMPLETE = false
+            self.STATE = self.STATES.DRAW_TO_HAND
+            for i = 1, #G.jokers.cards do
+                G.jokers.cards[i]:calculate_joker({CMDIA = {stan_msg = true}, card = G.jokers.cards[i]})
+            end
+        end
+    else
+        self:update_new_round(dt)
+    end
+end
+"""
+match_indent = true
+
+# following patches is the uhhh stanczyk
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = """
+G.STATE_COMPLETE = false
+            else
+"""
+position = "after"
+payload = """
+    local stanc_cards = SMODS.find_card("j_cmdia_stanczyk")
+    local stanc = (next(stanc_cards) ~= nil)
+
+    if stanc then G.GAME.current_round.CMDIA.stan_round = not G.GAME.current_round.CMDIA.stan_round end
+    if (stanc and G.GAME.current_round.CMDIA.stan_round) then
+        for i = 1, #G.jokers.cards do
+            G.jokers.cards[i]:calculate_joker({CMDIA = {stan_won = true}, card = G.jokers.cards[i]})
+        end
+    end
+"""
+match_indent = true

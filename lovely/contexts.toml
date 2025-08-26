@@ -1,0 +1,33 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# impostor
+# somehow this launches before talisman???? eh atleast it works
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "G.FUNCS.evaluate_play = function(e)"
+position = "after"
+payload = """
+SMODS.calculate_context({CMDIA = {modify_hand_before = true, hand = G.play.cards}})
+"""
+match_indent = true
+
+# flat earth
+[[patches]]
+[patches.pattern]
+target = "blind.lua"
+pattern = "if self.disabled then return mult, hand_chips, false end"
+position = "after"
+payload = """
+
+local hand_values = {mult, hand_chips, false}
+SMODS.calculate_context({CMDIA = {blind_modify_hand = true, hand_values = hand_values}})
+mult = hand_values[1]
+hand_chips = hand_values[2]
+modded = hand_values[3]
+
+"""
+match_indent = true

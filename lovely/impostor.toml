@@ -1,0 +1,24 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1000
+
+# helper function
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "function Card:is_suit(suit, bypass_debuff, flush_calc)"
+position = "before"
+payload = """
+function Card:CMDIA_get_suit(bypass_debuff, flush_calc)
+    if self.debuff and not bypass_debuff then return end
+    if SMODS.has_no_suit(self) then
+        return {tostring(math.random() * math.random())}
+    end
+    if SMODS.has_any_suit(self) then
+        return "All"
+    end
+    return self.base.suit
+end
+"""
+match_indent = true
