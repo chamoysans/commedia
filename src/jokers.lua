@@ -10,6 +10,11 @@ function HEX(hex) -- needed for colors
     return color
 end
 
+function CMDIA.roll(seed, odds, norm) -- helper
+    local prob = G.GAME.probabilities.normal
+    return (pseudorandom(seed or 'DEFAULTSEEDCMDIA_123') < (norm or (prob or 1))/odds)
+end
+
 SMODS.Atlas{
     key = 'cmdia_jokers',
     path = 'spritesheet.png',
@@ -17,6 +22,12 @@ SMODS.Atlas{
     py = 95,
     prefix_config = { key = false }
 }
+
+local debug = true
+
+function cmdiaprint(str)
+    if debug then print(str) end
+end
 
 CMDIA.dramatist_tarots = {
     tarot_supported = {
@@ -837,9 +848,57 @@ local jokers = {
             end
         end
     },
+    ['jokertools'] = {
+        config = {
+            extra = {
+                chanceone = 3,
+                chancetwo = 5,
+                chips = 15,
+                mult = 5,
+                reps = 1
+            }
+        },
+        pos = { x = 5, y = 1 },
+        rarity = 2,
+        cost = 5,
+        unlocked = true,
+        discovered = true,
+        blueprint_compat = true,
+        atlas = "cmdia_jokers",
+        loc_vars = function(self, info_queue, card)
+            if CMDIA.config.credit_tooltips then
+                info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "T_A_amb", colours = { G.C.FILTER, G.C.WHITE }}}
+            end
+            local prob = G.GAME.probabilities.normal
+            local cae = card.ability.extra 
+            return { vars = {prob or 1, cae.chanceone, cae.chips, cae.mult, cae.chancetwo}}
+        end,
+        calculate = function(self, card, context)
+
+            -- if your wondering why it doesnt say "Again!", its just how the game handles it
+            -- and i am NOT patching allat just so that i can make it say "again!"
+
+            if context.repetition and context.cardarea == G.play then
+                local cae = card.ability.extra
+
+                local jt1 = SMODS.pseudorandom_probability(card, 'cmdia_jkrtls1', 1, cae.chanceone) or false
+                local jt2 = SMODS.pseudorandom_probability(card, 'cmdia_jkrtls2', 1, cae.chanceone) or false
+                local jt3 = SMODS.pseudorandom_probability(card, 'cmdia_jkrtls3', 1, cae.chancetwo) or false
+
+                if jt1 then
+                    SMODS.calculate_effect({chips = cae.chips, message = localize{ type = 'variable', key = 'a_chips', vars = { cae.chips }}}, card)
+                end
+                if jt2 then
+                    SMODS.calculate_effect({mult  = cae.mult,  message = localize{ type = 'variable', key = 'a_mult',  vars = { cae.mult  }}}, card)
+                end
+                if jt3 and context.other_card then
+                    SMODS.calculate_effect({repetitions = cae.reps, message = localize('k_again_ex')}, card)
+                end
+
+            end
+        end
+    },
 }
-
-
 
 local function chipCheck(addstr, key)
     return (key == addstr .. "_chip"

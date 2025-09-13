@@ -1,15 +1,1 @@
-add:
-
-(by ihavetoclear)
-Recycler - Uncommon
-When a card is sold or destroyed,
-scale all scalable jokers
-
-AND
-
-(by Zestyclose-Click6190)
-Automation - Uncommon
-If a played hand contains
-4 cards or less,
-all scored Non-face Cards
-become Steel cards,
+alt+f5 = restart game

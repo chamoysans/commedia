@@ -166,6 +166,15 @@ return {
                     "{C:attention}3 or less{} scoring cards.",
                 }
             },
+            j_cmdia_jokertools = {
+                name = "Joker tools",
+                text = {
+                    "Played cards have a:",
+                    "{C:green}#1# in #2#{} chance to give {C:chips}+#3#{} Chips,",
+                    "{C:green}#1# in #2#{} chance to give {C:mult}+#4#{} Mult,",
+                    "and a {C:green}#1# in #5#{} chance to retrigger.",
+                }
+            },
         },
         Other={
             cmdia_credit = {
