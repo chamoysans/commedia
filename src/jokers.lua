@@ -867,7 +867,7 @@ local jokers = {
         atlas = "cmdia_jokers",
         loc_vars = function(self, info_queue, card)
             if CMDIA.config.credit_tooltips then
-                info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "T_A_amb", colours = { G.C.FILTER, G.C.WHITE }}}
+                info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "Le_losermeatly75", colours = { G.C.FILTER, G.C.WHITE }}}
             end
             local prob = G.GAME.probabilities.normal
             local cae = card.ability.extra 

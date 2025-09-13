@@ -1,5 +1,5 @@
 # Commedia - V0.1.11
-This mod currently adds 16 jokers, and will plan to add 349 more cards,
+This mod currently adds 17 jokers, and will plan to add 348 more cards,
 Each card is suggested by the community at each post by u/Familiar-Border8833 (Hey that's me!), Then whatever is the most upvoted comment will be added to this mod,
 
 ## How to install
