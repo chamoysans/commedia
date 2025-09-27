@@ -12,7 +12,7 @@ end
 
 function CMDIA.roll(seed, odds, norm) -- helper
     local prob = G.GAME.probabilities.normal
-    return (pseudorandom(seed or 'DEFAULTSEEDCMDIA_123') < (norm or (prob or 1))/odds)
+    return (pseudorandom(seed or 'DEFAULTSEEDCMDIA_123') < (prob or (norm or 1))/odds)
 end
 
 SMODS.Atlas{
@@ -754,7 +754,8 @@ local jokers = {
                 mod = 0.5
             }
         },
-        pos = { x = 3, y = 1 },
+        pos = { x = 0, y = 2 },
+        soul_pos = { x = 0, y = 3 },
         rarity = 2,
         cost = 5,
         unlocked = true,
@@ -881,9 +882,9 @@ local jokers = {
             if context.repetition and context.cardarea == G.play then
                 local cae = card.ability.extra
 
-                local jt1 = SMODS.pseudorandom_probability(card, 'cmdia_jkrtls1', 1, cae.chanceone) or false
-                local jt2 = SMODS.pseudorandom_probability(card, 'cmdia_jkrtls2', 1, cae.chanceone) or false
-                local jt3 = SMODS.pseudorandom_probability(card, 'cmdia_jkrtls3', 1, cae.chancetwo) or false
+                local jt1 = CMDIA.roll('cmdia_jkrtls1', cae.chanceone, 1) or false
+                local jt2 = CMDIA.roll('cmdia_jkrtls1', cae.chanceone, 1) or false
+                local jt3 = CMDIA.roll('cmdia_jkrtls1', cae.chanceone, 1) or false
 
                 if jt1 then
                     SMODS.calculate_effect({chips = cae.chips, message = localize{ type = 'variable', key = 'a_chips', vars = { cae.chips }}}, card)
@@ -898,6 +899,68 @@ local jokers = {
             end
         end
     },
+    ['crane'] = {
+        config = {
+            extra = {
+                hsize = 6,
+                chance = 4,
+                debuffed_cards = {}
+            }
+        },
+        pos = { x = 6, y = 1 },
+        rarity = 3,
+        cost = 5,
+        unlocked = true,
+        discovered = true,
+        blueprint_compat = false,
+        atlas = "cmdia_jokers",
+        loc_vars = function(self, info_queue, card)
+            if CMDIA.config.credit_tooltips then
+                info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "TheBigOrangeLiam864", colours = { G.C.FILTER, G.C.WHITE }}}
+            end
+            local prob = G.GAME.probabilities.normal
+            local cae = card.ability.extra 
+            return { vars = {cae.hsize, prob or 1, cae.chance}}
+        end,
+        calculate = function(self, card, context)
+
+            if context.blueprint then return end
+
+            local cae = card.ability.extra
+
+            if context.before then
+                for k, v in ipairs(context.full_hand) do
+
+                    local chance = CMDIA.roll('cmdia_crane', cae.chance) or false
+
+                    if chance then
+                        cae.debuffed_cards = cae.debuffed_cards or {}
+
+                        cae.debuffed_cards[#cae.debuffed_cards + 1] = v
+                        v:set_debuff(true)
+                    end
+                end
+            end
+
+            --[[
+            if context.end_of_round then
+                cae.debuffed_cards = cae.debuffed_cards or {}
+
+                for i, v in ipairs(cae.debuffed_cards) do
+                    v:set_debuff(false)
+                end
+
+                SMODS.calculate_effect({message = CMDIA.get_dictionary("cmdia_crane_clear")}, card)
+            end
+            ]]
+        end,
+        add_to_deck = function(self, card, from_debuff)
+            G.hand:change_size(card.ability.extra.hsize)
+        end,
+        remove_from_deck = function(self, card, from_debuff)
+            G.hand:change_size(0 - card.ability.extra.hsize)
+        end,
+    }
 }
 
 local function chipCheck(addstr, key)

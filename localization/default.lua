@@ -175,6 +175,16 @@ return {
                     "and a {C:green}#1# in #5#{} chance to retrigger.",
                 }
             },
+            j_cmdia_crane = {
+                name = "Crane",
+                text = {
+                    "{C:attention}+#1#{} hand size",
+                    "All played cards have a",
+                    "{C:green}#2# in #3#{} chance",
+                    "to be debuffed.",--[[ on",
+                    "this round.",]]
+                }
+            },
         },
         Other={
             cmdia_credit = {
@@ -244,6 +254,7 @@ return {
             cmdia_chipped = 'Chipped!',
             cmdia_stan_lost = "Lost.",
             cmdia_stan_won = "Won!",
+            cmdia_crane_clear = "Cleared!",
             cmdia = {
                 credit = {
                     Joker = {
