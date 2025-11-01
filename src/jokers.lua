@@ -23,6 +23,14 @@ SMODS.Atlas{
     prefix_config = { key = false }
 }
 
+SMODS.Atlas{
+    key = 'cmdia_j_questmaster',
+    path = 'questmaster.png',
+    px = 71,
+    py = 95,
+    prefix_config = { key = false }
+}
+
 local debug = true
 
 function cmdiaprint(str)
@@ -960,8 +968,287 @@ local jokers = {
         remove_from_deck = function(self, card, from_debuff)
             G.hand:change_size(0 - card.ability.extra.hsize)
         end,
-    }
+    },
+    ['questmaster'] = {
+        config = {
+            extra = {
+                quest = nil,
+                quest_vars = {
+
+                },
+                buffs = {
+                    chips = 0,
+                    mult = 0,
+                    xmult = 1,
+                    dollars = 0
+                },
+                reward = {0, nil},
+                seedstuff = 0,
+            }
+        },
+        pos = { x = 0, y = 0 },
+        rarity = 3,
+        cost = 5,
+        unlocked = true,
+        discovered = true,
+        blueprint_compat = true,
+        atlas = "cmdia_j_questmaster",
+        loc_vars = function(self, info_queue, card)
+            if CMDIA.config.credit_tooltips then
+                info_queue[#info_queue+1] = {key = 'cmdia_credit', set = 'Other', vars = { "Subject-Purchase-130", colours = { G.C.FILTER, G.C.WHITE }}}
+            end
+
+            local prob = G.GAME.probabilities.normal
+            local cae = card.ability.extra
+
+            if not cae.buffs.chips then cae.buffs.chips = 0 end
+
+            local reward = ""
+            local thunk = cae.reward[2]
+            if cae.quest then
+                local vars = {}
+
+                if cae.quest == "deal" or cae.quest == "oddball" then
+                    vars[1] = cae.quest_vars["hand"]
+                elseif cae.quest == "junk" then
+                    vars[1] = (4 * G.GAME.round_resets.discards) - cae.quest_vars.discarded
+                end
+
+                info_queue[#info_queue+1] = {key = 'qmqttd_cmdia_' .. cae.quest, set = 'Other', vars = vars}
+
+                if thunk == "m" then 
+                    reward = localize{ type = 'variable', key = 'a_mult',  vars = { cae.reward[1]}}
+                elseif thunk == "c" then
+                    reward = localize{ type = 'variable', key = 'a_chips',  vars = { cae.reward[1]}}
+                elseif thunk == "$" then
+                    reward = "+$" .. tostring(cae.reward[1])
+                elseif thunk == "xm" then
+                    reward = localize{type = 'variable', key = 'a_xmult',  vars = { cae.reward[1]}}
+                end
+            end
+            
+            info_queue[#info_queue+1] = {key = 'qmqttd_cmdia_buffs', set = 'Other', vars = {cae.buffs.chips, cae.buffs.mult, cae.buffs.xmult, cae.buffs.dollars}}
+
+            return { vars = {
+                cae.quest_disp or "None",
+                cae.quest and reward or "None",
+                colours = {
+                    ((thunk == "m" or thunk == "xm") and G.C.MULT or (thunk == "c" and G.C.CHIPS or (thunk == "$" and G.C.MONEY)))
+                }}
+            }
+        end,
+        calculate = function(self, card, context)
+            local cae = card.ability.extra
+
+            local buffs = cae.buffs
+
+            if not cae.buffs.chips then cae.buffs.chips = 0 end -- for some reson ts is nil so here you go ig
+
+            if context.setting_blind and not context.blueprint then
+
+                SMODS.calculate_effect({message = CMDIA.get_dictionary("cmdia_qm_new")}, card)
+
+                local quests = {
+                    {"last_resort", "Last Resort", 1, 0},
+                    {"headshot", "HEADSHOT", 2, 0},
+                    {"deal", "Deal", 3, 0},
+                    {"full_handed", "Full-handed", 0, 1},
+                    {"gambling", "Gambling", 1, 1},
+                    {"impulse", "Impulse Buyer", 2, 1},
+                    {"vanilla", "Pure Vanilla",3, 1},
+                    {"topping", "No Toppings",0, 2},
+                    {"collector", "Collector",1, 2},
+                    {"letting_go", "Letting Go",2, 2},
+                    {"reader", "Reader",3, 2},
+                    {"oddball", "Oddball",0, 3},
+                    {"fast_forward", "Fast-forward",2, 3,},
+                    {"junk", "It's All Junk",3, 3},
+                }
+
+                local entry = pseudorandom_element(quests, pseudoseed('cmdia_qm_quest_' .. tostring(cae.seedstuff)))
+
+                local pos = card.config.center.pos
+
+                pos.x, pos.y = entry[3], entry[4]
+
+                if entry[1] == "oddball" and (CMDIA.roll('cmdia_qm_sandwich_ee', 50, 1) or false) then
+                    pos.x = pos.x + 1
+                end
+
+                cae.seedstuff = cae.seedstuff + 1
+                cae.quest = entry[1]
+                cae.quest_disp = entry[2]
+
+                cae.quest_vars = {}
+
+                if entry[1] == "deal" or entry[1] == "oddball" then
+                    local hands = {}
+
+                    for k, v in pairs(G.GAME.hands) do
+                        hands[#hands + 1] = k
+                    end
+
+                    cae.quest_vars["hand"] = pseudorandom_element(hands, pseudoseed("cmdia_qm_deal" .. tostring(cae.seedstuff)))
+                elseif entry[1] == "full_handed" then
+                    cae.quest_vars["fives"] = 0
+                elseif entry[1] == "gambling" then
+                    cae.quest_vars.rolls = 0
+                elseif entry[1] == "impulse" then
+                    cae.quest_vars.packs = 0
+                elseif entry[1] == "vanilla" then
+                    cae.quest_vars.scoredEnhanced = false
+                elseif entry[1] == "topping" then
+                    cae.quest_vars.scoredEditionorSeal = false
+                elseif entry[1] == "junk" then
+                    cae.quest_vars.discarded = 0
+                end
+                
+
+                cae.seedstuff = cae.seedstuff + 1
+
+                local rewards = {
+                    {5, "m"},
+                    {15, "c"},
+                    {2, "$"},
+                    {0.2, "xm"},
+                }
+
+                cae.reward = pseudorandom_element(rewards, pseudoseed('cmdia_qm_reward_' .. tostring(cae.seedstuff)))   
+                cae.seedstuff = cae.seedstuff + 1
+                
+            end
+
+            if context.joker_main then
+                if cae.buffs.chips > 0 then
+                    SMODS.calculate_effect({chip_mod = buffs.chips, message = localize{type = 'variable', key = 'a_chips',  vars = { buffs.chips}}}, card)
+                end
+                if cae.buffs.mult > 0 then
+                    SMODS.calculate_effect({mult_mod = buffs.mult, message = localize{type = 'variable', key = 'a_mult',  vars = { buffs.mult}}}, card)
+                end
+                if cae.buffs.xmult - 1 ~= 0 then
+                    SMODS.calculate_effect({Xmult_mod = buffs.xmult, message = localize{type = 'variable', key = 'a_xmult',  vars = { buffs.xmult}}}, card)
+                end
+            end
+
+            local completed = false
+
+            if context.initial_scoring_step then
+                if cae.quest == "deal" and context.scoring_name == cae.quest_vars["hand"] then
+                    completed = true
+                end
+
+            elseif context.before then
+                if cae.quest == "full_handed" then
+                    cae.quest_vars.fives = cae.quest_vars.fives + 1
+                end
+                if cae.quest == "vanilla" then
+                    for _, card in ipairs(context.scoring_hand) do
+                        if card.ability.set == 'Enhanced' then 
+                            cae.quest_vars.scoredEnhanced = true
+                        end
+                    end
+                end
+                if cae.quest == "topping" then
+                    for _, card in ipairs(context.scoring_hand) do
+                        if card.edition or card.seal then 
+                            cae.quest_vars.scoredEditionorSeal = true
+                        end
+                    end
+                end
+
+            elseif context.reroll_shop then
+                if cae.quest == "gambling" then
+                    cae.quest_vars.rolls = cae.quest_vars.rolls + 1
+                    if cae.quest_vars.rolls == 2 then
+                        completed = true
+                    end
+                end
+            elseif context.end_of_round then
+                if cae.quest == "headshot" and G.GAME.current_round.hands_played == 0 then
+                    completed = true
+                elseif cae.quest == "last_resort" and G.GAME.current_round.hands_left == 0 then
+                    completed = true
+                elseif cae.quest == "full_handed" and cae.quest_vars.fives == G.GAME.current_round.hands_played then
+                    completed = true
+                elseif cae.quest == "vanilla" then
+                    completed = not cae.quest_vars.scoredEnhanced
+                elseif cae.quest == "topping" then
+                    completed = not cae.quest_vars.scoredEditionorSeal
+                end
+
+            elseif context.open_booster then
+                if cae.quest == "impulse" then
+                    cae.quest_vars.packs = cae.quest_vars.packs + 1
+                    if cae.quest_vars.packs == 2 then
+                        completed = true
+                    end
+                end
+
+            elseif context.buying_card then
+                if cae.quest == "collector" and context.card.ability.set == "Joker" then
+                    completed = true
+                end
+
+            elseif context.selling_card then
+                if cae.quest == "letting_go" and context.card.ability.set == "Joker" then
+                    completed = true
+                end
+
+            elseif context.using_consumeable then
+                local set = ((context.card or context.consumeable) or {}).ability.set
+                if cae.quest == "reader" and (set == "Spectral" or set == "Tarot") then
+                    completed = true
+                end
+                if cae.quest == "oddball" and set == "Planet" and context.consumeable.ability.consumeable.hand_type == cae.quest_vars["hand"] then
+                    completed = true
+                end
+
+            elseif context.skip_blind then
+                if cae.quest == "fast_forward" then
+                    completed = true
+                end
+
+            elseif context.pre_discard then
+                if cae.quest == "junk" then
+                    local minimum = 4 * G.GAME.round_resets.discards
+                    cae.quest_vars.discarded = cae.quest_vars.discarded + #context.full_hand
+                    if cae.quest_vars.discarded >= minimum then
+                        completed = true
+                    end
+                end
+            end
+
+            if completed then
+
+                local reward = cae.reward
+
+                if reward[2] == "m" then
+                    cae.buffs.mult = cae.buffs.mult + reward[1]
+                elseif reward[2] == "c" then
+                    cae.buffs.chips = cae.buffs.chips + reward[1]
+                elseif reward[2] == "$" then
+                    cae.buffs.dollars = cae.buffs.dollars + reward[1]
+                elseif reward[2] == "xm" then
+                    cae.buffs.xmult = cae.buffs.xmult + reward[1]
+                end
+
+                cae.quest = nil
+                cae.quest_disp = "Waiting..."
+
+                card.pos.x, card.pos.y = 0, 0
+
+                SMODS.calculate_effect({message = CMDIA.get_dictionary("cmdia_qm_completed")}, card)
+            end
+        end,
+        calc_dollar_bonus = function(self, card)
+            if card.ability.extra.buffs.dollars > 0 then return card.ability.extra.buffs.dollars end
+        end,
+    },
 }
+
+-- questmaster stuff
+
+
 
 local function chipCheck(addstr, key)
     return (key == addstr .. "_chip"
@@ -1034,7 +1321,7 @@ end
 CMDIA.lib.recycler_insert("j_ceremonial", {mult = 2,})
 CMDIA.lib.recycler_insert("j_ride_the_bus", {mult = 1,})
 CMDIA.lib.recycler_insert("j_runner", {extra = {chips = 15,}})
-CMDIA.lib.recycler_insert("j_constellation", {x_mult = 0.1,}) -- doesnt work
+CMDIA.lib.recycler_insert("j_constellation", {x_mult = 0.1,})
 CMDIA.lib.recycler_insert("j_green_joker", {mult = 1,})
 
 CMDIA.lib.recycler_insert("j_red_card", {mult = 3})
@@ -1141,7 +1428,7 @@ for k, v in pairs(jokers) do
 
     if shouldAdd then SMODS.Joker(v) end    
 
-    if true then -- testDeck then
+    if false then -- testDeck then
 
         local deck = {
             key = v.key,

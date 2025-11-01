@@ -185,6 +185,17 @@ return {
                     "this round.",]]
                 }
             },
+            j_cmdia_questmaster = {
+                name = "Questmaster",
+                text = {
+                    "Gives a quest {C:attention}every round{},",
+                    "Complete quests to add",
+                    "corresponding buffs",
+                    "to this joker {C:attention}permanently.{}",
+                    "Current Quest: {C:attention}#1#{},",
+                    "Reward: {V:1}#2#{}",
+                }
+            },
         },
         Other={
             cmdia_credit = {
@@ -225,6 +236,110 @@ return {
                     "being too hard,",
                 },
             },
+
+            -- questmaster quests tooltip stuff
+
+            qmqttd_cmdia_buffs = {
+                name = "Buff List",
+                text = {
+                    "Chips: {C:chips}+#1#{},",
+                    "Mult: {C:mult}+#2#{},",
+                    "XMult: {C:mult}X#3#{},",
+                    "$: {C:money}+$#4#{},",
+                }
+            },  
+
+            qmqttd_cmdia_last_resort = {
+                name = "Last Resort",
+                text = {
+                    "Beat Blind on the",
+                    "{C:attention}last hand{}",
+                }
+            },
+            qmqttd_cmdia_headshot = {
+                name = "HEADSHOT",
+                text = {
+                    "Beat Blind on the",
+                    "{C:attention}first hand{}",
+                }
+            },
+            qmqttd_cmdia_deal = {
+                name = "Deal",
+                text = {
+                    "Play a",
+                    "{C:attention}#1#{}",
+                }
+            },
+            qmqttd_cmdia_full_handed = {
+                name = "Full-handed",
+                text = {
+                    "Beat Blind by always",
+                    "playing {C:attention}5-card hands{}",
+                }
+            },
+            qmqttd_cmdia_gambling = {
+                name = "Gambling",
+                text = {
+                    "Reroll the shop twice",
+                }
+            },
+            qmqttd_cmdia_impulse = {
+                name = "Impulse Buyer",
+                text = {
+                    "Open {C:attention}2 packs{}",
+                }
+            },
+            qmqttd_cmdia_vanilla = {
+                name = "Pure Vanilla",
+                text = {
+                    "Beat Blind {C:attention}without{}",
+                    "{C:attention}scoring{} an enhanced card",
+                }
+            },
+            qmqttd_cmdia_topping = {
+                name = "No Toppings",
+                text = {
+                    "Beat Blind without",
+                    "scoring an card with",
+                    "an {C:attention}edition or seal{}",
+                }
+            },
+            qmqttd_cmdia_collector = {
+                name = "Collector",
+                text = {
+                    "Buy a Joker",
+                }
+            },
+            qmqttd_cmdia_letting_go = {
+                name = "Letting Go",
+                text = {
+                    "Sell a Joker",
+                }
+            },
+            qmqttd_cmdia_reader = {
+                name = "Reader",
+                text = {
+                    "Use a {C:tarot}tarot{}/{C:spectral}spectral{} card",
+                }
+            },
+            qmqttd_cmdia_oddball = {
+                name = "Oddball",
+                text = {
+                    "Upgrade a hand which isn't a {C:attention}#1#{}",
+                }
+            },
+            qmqttd_cmdia_fast_forward = {
+                name = "Fast-forward",
+                text = {
+                    "Skip a blind",
+                }
+            },
+            qmqttd_cmdia_junk = {
+                name = "It's All Junk",
+                text = {
+                    "Discard at least #1# cards",
+                }
+            },
         },
         Planet={},
         Spectral={},
@@ -255,6 +370,9 @@ return {
             cmdia_stan_lost = "Lost.",
             cmdia_stan_won = "Won!",
             cmdia_crane_clear = "Cleared!",
+            cmdia_qm_completed = "Completed!",
+            cmdia_qm_new = "New Quest!",
+            
             cmdia = {
                 credit = {
                     Joker = {
@@ -363,7 +481,11 @@ return {
         suits_plural={},
         suits_singular={},
         tutorial={},
-        v_dictionary={},
+        v_dictionary={
+            -- questmaster stuff
+
+            ["cmdia_qm_reward_$"] = "Permanent {C:money}+$#1#{}",
+        },
         v_text={},
     },
 }
