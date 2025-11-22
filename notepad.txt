@@ -2,55 +2,29 @@ alt+f5 = restart game
 
 UPLOAD TIMES:
 - weekdays: 11:00–14:00 UTC (golden spot: 1PM local time)
-- weekends: 08:00-10:00 UTC (golden spot: 5PM local time), 18:00-22:00 UTC (golden spot: none, just sleep bro 💔)
+- weekends: 08:00-10:00 UTC (golden spot: 5PM local time), 18:00-22:00 UTC (golden spot: 3AM or just sleep 💔)
+FLAIR TO USE: Joker/Gameplay Idea 
 
 master list:
 
-unlock requirement idea: Have your whole (holding) hand be de-buffed 
-Questmaster : Gives a task every round. Complete tasks to add corresponding buffs to Questmaster.
+do list:
 
-Tasks pool :
-- Last Resort - Beat Blind on last hand
-- HEADSHOT - Beat Blind on first hand
-- Deal - Play a [random poker hand]
-- Full-handed - Beat Blind by always playing 5 card hands
-- Gambler - Reroll the shop twice
-- Impulse Buyer - Open 2 packs
-- Pure Skill - Beat Blind without scoring an enhanced card
-- Untouched - Beat Blind without scoring a card with an edition or seal
-- Collector - Acquire a Joker
-- Letting Go - Sell a Joker
-- Tarot/Spectral Reader - Use a tarot/spectral card
-- Oddball - Upgrade a hand which is not a [most played hand]
-- Fast-forward - Skip a blind
-- It's All Junk - Discard at least [4*amount of discards] cards
-- & - Play a hand with scoring cards containing a 2 and a King
+QUESTMASTER QUESTS:
+- Play a card with [random enhancement] on it
+- Convert a card in your deck to a two
+- Create a stone card with a [random seal]
+- Play 3 unscoring enhanced cards at once
+- Sell a negative Joker: This Joker turns negative (cryptid only)
 
-Rewards pool :
-- Permanent +5 Mult
-- Permanent +15 Chips
-- Permanent +$2
-- Permanent +X0.20 Mult
-
-done list:
-- localization files for Joker
-- localization files for quests
-- variable stuff
-- random quest thingy
-- random reward thingy
-- almost done localization
-- done localization (just moved it to the set "Other" lmao)
-- done with Deal
-- done with full handed
-- done with gambling
-- done with headshot, last resort, and full-handed
-- done with impulse
-- done with vanilla
-- done with toppings
-- done with Collector
-- done with letting Go
-- done with Reader
-- done with oddball
-- done with fast forward
-- done with Junk
-- DONE WITH IT ALL!!!!! time to playtest
+ACTUAL IDEAS:
+(images from: https://drive.google.com/drive/folders/1HMEPHABMYKRjfxago6HAluTmJxL8aNcV)
+- Ancient Ritual;
+	- | When sold during Blind: convert all jokers to Mr. Bones,
+	  | all consumables to Death, -1 hand,
+	  | and turn a random card in hand
+	  | into a Philosopher Card.
+- Philosopher Card;
+	- | Counts as Stone, Glass, Steel, and Gold.
+	  | Can't be debuffed or destroyed.
+	  | Counts as every suit.
+	  | (Doesn't change poker hand)

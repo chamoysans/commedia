@@ -196,6 +196,28 @@ return {
                     "Reward: {V:1}#2#{}",
                 }
             },
+            j_cmdia_ritual = {
+            	name = "Ancient Ritual",
+            	text = {
+            		"When sold during Blind:",
+            		"Convert all other jokers",
+            		"to Mr. Bones, All consumables",
+            		"to reath, -1 hand, and",
+            		"turn a random card in",
+            		"hand into a Philosopher Card.",
+            	}
+            }
+        },
+        Enhanced = {
+			m_cmdia_philosopher = {
+				name = "Philosopher Card",
+				text = {
+					"Counts as if it were",
+					"{C:attention}Stone, Glass, Steel, Lucky,{}",
+					"and {C:attention}Gold cards.{}",
+					"Can't be debuffed or destroyed.",
+				}
+			}
         },
         Other={
             cmdia_credit = {
@@ -300,7 +322,7 @@ return {
                 name = "No Toppings",
                 text = {
                     "Beat Blind without",
-                    "scoring an card with",
+                    "scoring a card with",
                     "an {C:attention}edition or seal{}",
                 }
             },
@@ -340,13 +362,51 @@ return {
                     "Discard at least #1# cards",
                 }
             },
+            qmqttd_cmdia_augment = {
+			    name = "Augment",
+			    text = {
+			        "Play a card with",
+			        "a {C:attention}#1#.{}",
+			    }
+			},
+
+			qmqttd_cmdia_deuce = {
+			    name = "Deuce",
+			    text = {
+			        "Convert a card",
+			        "in your deck to a two.",
+			    }
+			},
+
+			qmqttd_cmdia_sealed = {
+			    name = "Sealed",
+			    text = {
+			        "Create a stone card",
+			        "with a {C:attention}#1#.{}",
+			    }
+			},
+
+			qmqttd_cmdia_trio = {
+			    name = "Trio",
+			    text = {
+			        "Play 3 unscoring",
+			        "enhanced cards at once.",
+			    }
+			},
+
+			qmqttd_cmdia_reversal = {
+				name = "Reversal",
+				text = {
+					"Sell a negative Joker.",
+				}
+			},
         },
         Planet={},
         Spectral={},
         Stake={},
         Tag={},
         Tarot={},
-        Voucher={}
+        Voucher={},
     },
     misc = {
         achievement_descriptions={},
