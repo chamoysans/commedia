@@ -6,6 +6,11 @@ UPLOAD TIMES:
 FLAIR TO USE: Joker/Gameplay Idea 
 
 master list:
+- done with localization for new quests
+- done with localization for ancient ritual
+- done with localization for philosopher card
+- done with entries for new quests
+- done with new sprites for new quests
 
 do list:
 

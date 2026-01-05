@@ -1,4 +1,3 @@
-
 function find_index(t, value)
     for i, v in ipairs(t) do
         if v == value then
@@ -9,7 +8,7 @@ function find_index(t, value)
 end
 
 SMODS.current_mod.config_tab = function()
-	return CMDIA.config_menu_handler()    
+    return CMDIA.config_menu_handler()
 end
 
 CMDIA._state.music = {
@@ -17,7 +16,6 @@ CMDIA._state.music = {
 }
 
 function CMDIA.config_menu_handler()
-
     local get_localization = CMDIA.get_dictionary("cmdia").music
 
     local music_key = CMDIA.music.keys[CMDIA._state.music.current_option]
@@ -26,24 +24,51 @@ function CMDIA.config_menu_handler()
 
     return {
         n = G.UIT.ROOT,
-        config = {align = "cm", padding = 0.2, minw = 10, minh = 6, colour = G.C.BLACK,r = 0.1},
+        config = { align = "cm", padding = 0.2, minw = 10, minh = 6, colour = G.C.BLACK, r = 0.1 },
         nodes = {
-            {n = G.UIT.C, config = {align = "bm", padding = 0.2, minw = 10, minh = 2.5}, nodes = {
-                {n = G.UIT.C, config = {align = "bl"}, nodes = {
-                    UIBox_button({colour = G.C.RED, align = "bl", minw = 0.5, minh = 0.5, padding = 0.1, emboss = 0.2, button = "CMDIA_config_menu_updater_prev", label = {"<"},}),
-                }},
-                {n = G.UIT.R, config = {align = "bm", minh = 2}, nodes = {
-                    {n = G.UIT.R, config = {align = "tm"}, nodes = {
-                        UIBox_button({colour = G.C.RED, align = "tm", minw = 3.5, minh = 0.5, padding = 0.1, emboss = 0.2, button = "CMDIA_nothing", label = {loc_text[1]},}),
-                    }},
-                    {n = G.UIT.R, config = {align = "bm"}, nodes = {
-                        {n = G.UIT.T, config = {text = loc_text[2], scale = 0.4, padding = 0.1, colour = G.C.WHITE, align = "bm"}},
-                    }},
-                }},
-                {n = G.UIT.C, config = {align = "br"}, nodes = {
-                    UIBox_button({colour = G.C.RED, align = "br", minw = 0.5, minh = 0.5, padding = 0.1, emboss = 0.2, button = "CMDIA_config_menu_updater_next", label = {">"},}),
-                }},
-            }},
+            {
+                n = G.UIT.C,
+                config = { align = "bm", padding = 0.2, minw = 10, minh = 2.5 },
+                nodes = {
+                    {
+                        n = G.UIT.C,
+                        config = { align = "bl" },
+                        nodes = {
+                            UIBox_button({ colour = G.C.RED, align = "bl", minw = 0.5, minh = 0.5, padding = 0.1, emboss = 0.2, button =
+                            "CMDIA_config_menu_updater_prev", label = { "<" }, }),
+                        }
+                    },
+                    {
+                        n = G.UIT.R,
+                        config = { align = "bm", minh = 2 },
+                        nodes = {
+                            {
+                                n = G.UIT.R,
+                                config = { align = "tm" },
+                                nodes = {
+                                    UIBox_button({ colour = G.C.RED, align = "tm", minw = 3.5, minh = 0.5, padding = 0.1, emboss = 0.2, button =
+                                    "CMDIA_nothing", label = { loc_text[1] }, }),
+                                }
+                            },
+                            {
+                                n = G.UIT.R,
+                                config = { align = "bm" },
+                                nodes = {
+                                    { n = G.UIT.T, config = { text = loc_text[2], scale = 0.4, padding = 0.1, colour = G.C.WHITE, align = "bm" } },
+                                }
+                            },
+                        }
+                    },
+                    {
+                        n = G.UIT.C,
+                        config = { align = "br" },
+                        nodes = {
+                            UIBox_button({ colour = G.C.RED, align = "br", minw = 0.5, minh = 0.5, padding = 0.1, emboss = 0.2, button =
+                            "CMDIA_config_menu_updater_next", label = { ">" }, }),
+                        }
+                    },
+                }
+            },
         }
     }
 end
@@ -65,7 +90,6 @@ G.FUNCS.cmdia_music_change = function(args)
 end
 
 function CMDIA.config_menu_updater(e, dir)
-
     local state = CMDIA._state.music
 
     local count = #CMDIA.music.options
@@ -81,8 +105,8 @@ function CMDIA.config_menu_updater(e, dir)
     menu_wrap.config.object:remove()
     menu_wrap.config.object = UIBox({
         definition = CMDIA.config_menu_handler(),
-        config = {parent = menu_wrap, no_fill = true} -- You MUST specify parent!
+        config = { parent = menu_wrap, no_fill = true } -- You MUST specify parent!
     })
-    
+
     menu_wrap.UIBox:recalculate()
 end
