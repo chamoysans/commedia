@@ -3,7 +3,7 @@ alt+f5 = restart game
 UPLOAD TIMES:
 - weekdays: 11:00–14:00 UTC (golden spot: 1PM local time)
 - weekends: 08:00-10:00 UTC (golden spot: 5PM local time), 18:00-22:00 UTC (golden spot: 3AM or just sleep 💔)
-FLAIR TO USE: Joker/Gameplay Idea 
+FLAIR TO USE: Joker/Gameplay Idea
 
 master list:
 - done with localization for new quests
@@ -29,7 +29,9 @@ ACTUAL IDEAS:
 	  | and turn a random card in hand
 	  | into a Philosopher Card.
 - Philosopher Card;
-	- | Counts as Stone, Glass, Steel, and Gold.
+	- | Counts as Stone, Glass, Steel, Lucky, and Gold.
 	  | Can't be debuffed or destroyed.
-	  | Counts as every suit.
-	  | (Doesn't change poker hand)
+
+- reminder to self, uhhh make sure to go back to "https://www.reddit.com/r/balatro/comments/1pfjknc/comment/nskn25v/" and like
+| just tell them that uhhh new post is out, don't want them being left alone
+| okay that sounded narcissistic

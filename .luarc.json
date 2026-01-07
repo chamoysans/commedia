@@ -1,0 +1,29 @@
+{
+  "diagnostics.globals": [
+    "love",
+    "SMODS",
+    "localize",
+    "G",
+    "play_sound",
+    "create_card",
+    "Event",
+    "delay",
+    "update_hand_text",
+    "level_up_hand",
+    "pseudorandom_element",
+    "pseudorandom_seed",
+    "pseudoseed",
+    "ease_dollars",
+    "poll_edition",
+    "check_for_unlock",
+    "attention_text",
+    "unlock_card",
+    "add_joker",
+    "UIBox",
+    "highlight_card",
+    "Game",
+    "UIBox_button",
+    "tprint"
+  ],
+  "diagnostics.disable": ["lowercase-global", "trailing-space"]
+}

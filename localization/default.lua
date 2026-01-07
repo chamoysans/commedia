@@ -1,10 +1,9 @@
 return {
     descriptions = {
-        Back={},
-        Blind={},
-        Edition={},
-        Enhanced={},
-        Joker={
+        Back = {},
+        Blind = {},
+        Edition = {},
+        Joker = {
             j_cmdia_fourleaf_clover = {
                 name = "Four-leaf Clover",
                 text = {
@@ -181,7 +180,7 @@ return {
                     "{C:attention}+#1#{} hand size",
                     "All played cards have a",
                     "{C:green}#2# in #3#{} chance",
-                    "to be debuffed.",--[[ on",
+                    "to be debuffed.", --[[ on",
                     "this round.",]]
                 }
             },
@@ -197,29 +196,29 @@ return {
                 }
             },
             j_cmdia_ritual = {
-            	name = "Ancient Ritual",
-            	text = {
-            		"When sold during Blind:",
-            		"Convert all other jokers",
-            		"to Mr. Bones, All consumables",
-            		"to reath, -1 hand, and",
-            		"turn a random card in",
-            		"hand into a Philosopher Card.",
-            	}
+                name = "Ancient Ritual",
+                text = {
+                    "When sold during Blind:",
+                    "Convert all other jokers",
+                    "to {C:attention}Mr. Bones,{} All consumables",
+                    "to {C:attention}The Death,{} {C:chips}-#1# hand,{} and",
+                    "turn a random card in",
+                    "hand into a {C:attention}Philosopher Card.{}",
+                }
             }
         },
         Enhanced = {
-			m_cmdia_philosopher = {
-				name = "Philosopher Card",
-				text = {
-					"Counts as if it were",
-					"{C:attention}Stone, Glass, Steel, Lucky,{}",
-					"and {C:attention}Gold cards.{}",
-					"Can't be debuffed or destroyed.",
-				}
-			}
+            m_cmdia_philosopher = {
+                name = "Philosopher Card",
+                text = {
+                    "Counts as if it were",
+                    "{C:attention}Stone, Glass, Steel, Lucky,{}",
+                    "and {C:attention}Gold cards.{}",
+                    "Can't be debuffed or destroyed.",
+                }
+            }
         },
-        Other={
+        Other = {
             cmdia_credit = {
                 name = "Credit - Idea",
                 text = {
@@ -269,7 +268,7 @@ return {
                     "XMult: {C:mult}X#3#{},",
                     "$: {C:money}+$#4#{},",
                 }
-            },  
+            },
 
             qmqttd_cmdia_last_resort = {
                 name = "Last Resort",
@@ -363,58 +362,58 @@ return {
                 }
             },
             qmqttd_cmdia_augment = {
-			    name = "Augment",
-			    text = {
-			        "Play a card with",
-			        "a {C:attention}#1#.{}",
-			    }
-			},
+                name = "Augment",
+                text = {
+                    "Play a card with",
+                    "a {C:attention}#1#.{}",
+                }
+            },
 
-			qmqttd_cmdia_deuce = {
-			    name = "Deuce",
-			    text = {
-			        "Convert a card",
-			        "in your deck to a two.",
-			    }
-			},
+            qmqttd_cmdia_deuce = {
+                name = "Deuce",
+                text = {
+                    "Convert a card",
+                    "in your deck to a two.",
+                }
+            },
 
-			qmqttd_cmdia_sealed = {
-			    name = "Sealed",
-			    text = {
-			        "Create a stone card",
-			        "with a {C:attention}#1#.{}",
-			    }
-			},
+            qmqttd_cmdia_sealed = {
+                name = "Sealed",
+                text = {
+                    "Create a stone card",
+                    "with a {C:attention}#1#.{}",
+                }
+            },
 
-			qmqttd_cmdia_trio = {
-			    name = "Trio",
-			    text = {
-			        "Play 3 unscoring",
-			        "enhanced cards at once.",
-			    }
-			},
+            qmqttd_cmdia_trio = {
+                name = "Trio",
+                text = {
+                    "Play 3 unscoring",
+                    "enhanced cards at once.",
+                }
+            },
 
-			qmqttd_cmdia_reversal = {
-				name = "Reversal",
-				text = {
-					"Sell a negative Joker.",
-				}
-			},
+            qmqttd_cmdia_reversal = {
+                name = "Reversal",
+                text = {
+                    "Sell a negative Joker.",
+                }
+            },
         },
-        Planet={},
-        Spectral={},
-        Stake={},
-        Tag={},
-        Tarot={},
-        Voucher={},
+        Planet = {},
+        Spectral = {},
+        Stake = {},
+        Tag = {},
+        Tarot = {},
+        Voucher = {},
     },
     misc = {
-        achievement_descriptions={},
-        achievement_names={},
-        blind_states={},
-        challenge_names={},
-        collabs={},
-        dictionary={
+        achievement_descriptions = {},
+        achievement_names = {},
+        blind_states = {},
+        challenge_names = {},
+        collabs = {},
+        dictionary = {
             cmdia_plucked = 'Plucked!',
             cmdia_locked = 'Locked!',
             cmdia_forged = 'Forged!',
@@ -432,7 +431,7 @@ return {
             cmdia_crane_clear = "Cleared!",
             cmdia_qm_completed = "Completed!",
             cmdia_qm_new = "New Quest!",
-            
+            cmdia_ritual_indestructable = "nuh uh",
             cmdia = {
                 credit = {
                     Joker = {
@@ -532,20 +531,20 @@ return {
                 config_music_select = "Music"
             },
         },
-        high_scores={},
-        labels={},
-        poker_hand_descriptions={},
-        poker_hands={},
-        quips={},
-        ranks={},
-        suits_plural={},
-        suits_singular={},
-        tutorial={},
-        v_dictionary={
+        high_scores = {},
+        labels = {},
+        poker_hand_descriptions = {},
+        poker_hands = {},
+        quips = {},
+        ranks = {},
+        suits_plural = {},
+        suits_singular = {},
+        tutorial = {},
+        v_dictionary = {
             -- questmaster stuff
 
             ["cmdia_qm_reward_$"] = "Permanent {C:money}+$#1#{}",
         },
-        v_text={},
+        v_text = {},
     },
 }

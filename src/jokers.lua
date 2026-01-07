@@ -1,3 +1,5 @@
+-- note to self: reminder that consumables are spelled consumeables here
+
 local testDeck = false -- for some reason test decks are broken
 
 local modPrefix = "cmdia"
@@ -1306,6 +1308,205 @@ local jokers = {
         end,
         calc_dollar_bonus = function(self, card)
             if card.ability.extra.buffs.dollars > 0 then return card.ability.extra.buffs.dollars end
+        end,
+    },
+    ['ritual'] = {
+        config = {
+            extra = {
+                hand_deduct = 1,
+            }
+        },
+        pos = { x = 7, y = 1 }, -- sprite pos, starting from 0
+        rarity = 3,             -- rarity
+        cost = 6,               -- cost
+        unlocked = true,
+        discovered = true,
+        blueprint_compat = false, -- compat w/ blueprint,
+        atlas = "cmdia_jokers",
+        loc_vars = function(self, info_queue, card)
+            if CMDIA.config.credit_tooltips then
+                info_queue[#info_queue + 1] = { key = 'cmdia_credit', set = 'Other', vars = { "Zestyclose-Click6190", colours = { G.C.FILTER, G.C.WHITE } } }
+            end
+            local cae = card.ability.extra
+
+            -- var stuff
+
+            return { vars = { cae.hand_deduct } }
+        end,
+        calculate = function(self, card, context)
+            if context.blueprint then return end
+            if not context.selling_self then return end
+
+            --[[
+
+            "When sold during Blind:",
+            "Convert all other jokers",
+            "to Mr. Bones, All consumables",
+            "to death, -#1# hand, and",
+            "turn a random card in",
+            "hand into a Philosopher Card.",
+
+            ]]
+
+            -- remove hand
+
+            ease_hands_played(-1)
+
+            -- flip
+
+            local larger = (#G.consumeables.cards > #G.jokers.cards) and G.consumeables.cards or G.jokers.cards
+
+            delay(0.25)
+
+            for i = 1, #larger do
+                local percentj = 1.15 - (i - 0.999) / (#G.jokers.cards - 0.998) * 0.3
+                local percentc = 1.15 - (i - 0.999) / (#G.consumeables.cards - 0.998) * 0.3
+                G.E_MANAGER:add_event(Event({
+                    trigger = 'after',
+                    delay = 0.15,
+                    func = function()
+                        if G.jokers.cards[i] then
+                            G.jokers.cards[i]:flip()
+                            play_sound('card1', percentj)
+                            G.jokers.cards[i]:juice_up(0.3, 0.3)
+                        end
+                        if G.consumeables.cards[i] then
+                            G.consumeables.cards[i]:flip()
+                            play_sound('card1', percentc)
+                            G.consumeables.cards[i]:juice_up(0.3, 0.3)
+                        end
+                        return true
+                    end
+                }))
+            end
+
+            delay(0.2)
+
+            -- convert to mr bones
+
+
+            for i = 1, #G.jokers.cards do
+                G.E_MANAGER:add_event(Event({
+                    trigger = 'after',
+                    delay = 0.1,
+                    func = function()
+                        print('turning :) | J')
+                        G.jokers.cards[i]:set_ability(G.P_CENTERS["j_mr_bones"])
+                        return true
+                    end
+                }))
+            end
+
+            -- convert to death
+
+            for i = 1, #G.consumeables.cards do
+                G.E_MANAGER:add_event(Event({
+                    trigger = 'after',
+                    delay = 0.1,
+                    func = function()
+                        print('turning :) | C | ' .. tostring(i))
+                        G.consumeables.cards[i]:set_ability(G.P_CENTERS["c_death"])
+                        return true
+                    end
+                }))
+            end
+
+            -- flip again
+
+            delay(0.25)
+
+            for i = 1, #larger do
+                local percentj = 1.15 - (i - 0.999) / (#G.jokers.cards - 0.998) * 0.3
+                local percentc = 1.15 - (i - 0.999) / (#G.consumeables.cards - 0.998) * 0.3
+                G.E_MANAGER:add_event(Event({
+                    trigger = 'after',
+                    delay = 0.15,
+                    func = function()
+                        if G.jokers.cards[i] then
+                            G.jokers.cards[i]:flip()
+                            play_sound('card1', percentj)
+                            G.jokers.cards[i]:juice_up(0.3, 0.3)
+                        end
+                        if G.consumeables.cards[i] then
+                            G.consumeables.cards[i]:flip()
+                            play_sound('card1', percentc)
+                            G.consumeables.cards[i]:juice_up(0.3, 0.3)
+                        end
+                        return true
+                    end
+                }))
+            end
+
+            -- random card > Philosopher
+
+
+            local rand_card = pseudorandom_element(G.hand.cards, "ritual_randcard")
+
+            -- flip card
+
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 0.1,
+                func = function()
+                    rand_card:flip()
+                    play_sound('card1', 1)
+                    return true
+                end
+            }))
+
+            -- turn
+            -- use m_stone temporarily
+
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 0.1,
+                func = function()
+                    rand_card:set_ability(G.P_CENTERS["m_cmdia_philosopher"])
+                    return true
+                end
+            }))
+
+            -- flip card again
+
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 0.1,
+                func = function()
+                    rand_card:flip()
+                    play_sound('card1', 1)
+                    return true
+                end
+            }))
+        end,
+    },
+}
+
+local template = {
+    ['jkr'] = {
+        config = {
+            extra = {
+                -- vars
+            }
+        },
+        pos = { x = 0, y = 0 }, -- sprite pos, starting from 0
+        rarity = 1,             -- rarity
+        cost = 1,               -- cost
+        unlocked = true,
+        discovered = true,
+        blueprint_compat = false, -- compat w/ blueprint,
+        atlas = "cmdia_jokers",
+        loc_vars = function(self, info_queue, card)
+            if CMDIA.config.credit_tooltips then
+                info_queue[#info_queue + 1] = { key = 'cmdia_credit', set = 'Other', vars = { "TheBigOrangeLiam864", colours = { G.C.FILTER, G.C.WHITE } } }
+            end
+            local cae = card.ability.extra
+
+            -- var stuff
+
+            return { vars = {} }
+        end,
+        calculate = function(self, card, context)
+            if context.blueprint then return end
         end,
     },
 }
